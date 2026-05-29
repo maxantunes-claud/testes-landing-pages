@@ -216,7 +216,17 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 // ══════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?output=csv';
+const SHEET_URLS = {
+  cca:      'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=181204639&single=true&output=csv',
+  cpd:      'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=279767688&single=true&output=csv',
+  ccf:      'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=811264268&single=true&output=csv',
+  ciic:     'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=1762721591&single=true&output=csv',
+  ops:      'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=1781734748&single=true&output=csv',
+  saude:    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=1439976497&single=true&output=csv',
+  comp:     'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=940396083&single=true&output=csv',
+  mbalid:   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=49591581&single=true&output=csv',
+  congresso:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR/pub?gid=1607300262&single=true&output=csv',
+};
 
 // Static course config (budgets & channel structure) — update if budgets change
 const COURSE_CONFIG = {
@@ -652,37 +662,47 @@ function renderDash(courseData) {
   document.getElementById('loading').style.display = 'none';
 }
 
-function loadData() {
-  // 1. Render immediately with static data (no waiting)
-  const courseData = {};
-  COURSE_ORDER.forEach(k => { courseData[k] = STATIC[k]; });
-  renderDash(courseData);
-
-  // 2. Try to fetch fresh data from Sheets in background
-  const PROXY = 'https://corsproxy.io/?' + encodeURIComponent(SHEET_URL);
-  fetch(PROXY, {cache:'no-store'})
+function fetchCourse(key, courseData) {
+  const url = SHEET_URLS[key];
+  const proxy = 'https://corsproxy.io/?' + encodeURIComponent(url);
+  return fetch(proxy, {cache:'no-store'})
     .then(res => res.ok ? res.text() : null)
     .then(csv => {
       if (!csv || csv.length < 50 || csv.includes('Host not') || csv.includes('error')) return;
       try {
         const parsed = parseCSV(csv);
-        for (const k of COURSE_ORDER) {
-          if (Math.abs(parsed.totals.m_leads - STATIC[k].totals.m_leads) < 15) {
-            courseData[k] = {
-              ...STATIC[k],
-              totals: { ...STATIC[k].totals, ...parsed.totals },
-              meta_inv: parsed.meta_inv, meta_leads: parsed.meta_leads,
-              g_inv: parsed.g_inv, g_leads: parsed.g_leads,
-              l_inv: parsed.l_inv, l_leads: parsed.l_leads
-            };
-            // Re-render with fresh data
-            renderDash(courseData);
-            break;
-          }
-        }
+        courseData[key] = {
+          ...STATIC[key],
+          totals: { ...STATIC[key].totals, ...parsed.totals },
+          meta_inv: parsed.meta_inv, meta_leads: parsed.meta_leads,
+          g_inv: parsed.g_inv,       g_leads: parsed.g_leads,
+          l_inv: parsed.l_inv,       l_leads: parsed.l_leads
+        };
       } catch(e) {}
     })
-    .catch(() => {}); // silently ignore fetch errors
+    .catch(() => {});
+}
+
+function loadData() {
+  // 1. Render immediately with static data
+  const courseData = {};
+  COURSE_ORDER.forEach(k => { courseData[k] = STATIC[k]; });
+  renderDash(courseData);
+
+  // 2. Fetch all courses in parallel, re-render as each arrives
+  let completed = 0;
+  COURSE_ORDER.forEach(key => {
+    fetchCourse(key, courseData).then(() => {
+      completed++;
+      // Re-render after each fetch, and definitely after all done
+      if (completed === COURSE_ORDER.length) {
+        renderDash(courseData);
+      } else {
+        // partial update — rebuild just this course page
+        buildCoursePage(key, courseData);
+      }
+    });
+  });
 }
 
 loadData();
