@@ -1,2 +1,2 @@
-# lec-dashboard-maio
+# lec-dashboard
 Dashboard Mídia Paga - LEC Maio
