@@ -98,7 +98,7 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 <div class="loading-overlay" id="loading">
   <div class="loading-logo">LEC</div>
   <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
-  <div class="loading-text">Sincronizando dados corporativos de Junho…</div>
+  <div class="loading-text">Sincronizando dados de Junho (Drive Pessoal)...</div>
 </div>
 
 <div class="header">
@@ -137,13 +137,20 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 <div id="page-congresso" class="page"></div>
 
 <script>
-// Link da nova implantacao do Apps Script inserido na linha abaixo
-const APPS_SCRIPT_API = 'https://script.google.com/macros/s/AKfycbyTEH45rBiRGSWaHy6cL-k2XAXlRAk9U1UmC32sD6ja/exec';
+// ID da planilha unificada do seu Google Drive Pessoal
+const SPREADSHEET_ID = '1NK66oLF9GyJI4VEIjbzCNOLGXVHEqEw1hj-LzKxD9lc';
 
+// GIDs atualizados correspondentes à exportação da sua conta pessoal
 const GIDS = {
-  cca:       '181204639', cpd: '279767688', ccf: '811264268',
-  ciic:      '1762721591', ops: '1781734748', saude: '1439976497',
-  comp:      '940396083', mbalid: '49591581', congresso: '1607300262'
+  cca:       '373281884',  
+  cpd:       '279767688', 
+  ccf:       '811264268',
+  ciic:      '1762721591', 
+  ops:       '1781734748', 
+  saude:     '1439976497',
+  comp:      '940396083', 
+  mbalid:    '49591581', 
+  congresso: '1607300262'
 };
 
 const COURSE_CONFIG = {
@@ -321,19 +328,20 @@ function renderDash(courseData) {
   const loader = document.getElementById('loading'); if (loader) loader.style.display = 'none';
 }
 
-async function fetchFromAppsScript(gid) {
+async function fetchFromGoogleSheets(gid) {
   try {
-    const url = `${APPS_SCRIPT_API}?gid=${gid}&_t=${new Date().getTime()}`;
-    const res = await fetch(url, { method: 'GET', redirect: 'follow' });
+    // Requisição nativa direta para o CSV público do seu Google Drive pessoal
+    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/pub?gid=${gid}&single=true&output=csv&_t=${new Date().getTime()}`;
+    const res = await fetch(url);
     if (!res.ok) return null;
     const text = await res.text();
     if (text && text.length > 50 && !text.startsWith('<html')) { return text; }
-  } catch(e) { console.error(`Falha ao buscar dados do GID ${gid}:`, e); }
+  } catch(e) { console.error(`Falha na sincronização do GID ${gid}:`, e); }
   return null;
 }
 
 async function fetchCourse(key, courseData) {
-  const gid = GIDS[key]; const csv = await fetchFromAppsScript(gid); if (!csv) return; 
+  const gid = GIDS[key]; const csv = await fetchFromGoogleSheets(gid); if (!csv) return; 
   try {
     const parsed = parseCSV(csv);
     if (parsed.totals.inv > 0 || parsed.totals.leads > 0 || parsed.totals.m_inv > 0) {
@@ -346,6 +354,7 @@ async function loadData() {
   const courseData = {}; COURSE_ORDER.forEach(k => { courseData[k] = JSON.parse(JSON.stringify(STATIC[k])); });
   renderDash(courseData);
 
+  // Força desbloqueio visual após 4 segundos caso a resposta do servidor demore
   const failSafeTimeout = setTimeout(() => { renderDash(courseData); }, 4000);
   const fetches = COURSE_ORDER.map(key => fetchCourse(key, courseData).then(() => { buildCoursePage(key, courseData); }));
 
