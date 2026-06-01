@@ -210,7 +210,7 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 
 <script>
 // ══════════════════════════════════════════════
-// CONFIG — Atualizado com a sua URL estável da API
+// CONFIG — ID estável da API gerada no seu Workspace
 // ══════════════════════════════════════════════
 const SCRIPT_BASE_URL = 'https://script.google.com/macros/s/AKfycbzJkdBvRuczfybaaPqi6n9aZNPh25Co6kT3pjRBHfTozxxXTN9KR7hyGLigFcZhVu_b0Q/exec';
 
@@ -239,9 +239,9 @@ const COURSE_CONFIG = {
 };
 const COURSE_ORDER = ['cca','cpd','ccf','ciic','ops','saude','comp','mbalid','congresso'];
 
-// Ajustado para Junho (30 dias / Mês 6)
+// Junho (30 dias / Mês 6)
 const DAYS = Array.from({length:30},(_,i)=>`${i+1}/6`);
-const EXCEL_BASE = 46173; // Serial base correto para Junho/2026
+const EXCEL_BASE = 46173; 
 
 // ══════════════════════════════════════════════
 // HELPERS
@@ -277,7 +277,7 @@ function parseCSV(csvText) {
     const r = rows[i];
     if (!r || !r[0]) continue;
     const serial = parseInt(r[0]);
-    if (isNaN(serial) || serial < 46170 || serial > 46210) continue; // Range expandido para o mês 06
+    if (isNaN(serial)) continue;
     const day = serial - EXCEL_BASE;
     if (day < 1 || day > 30) continue;
 
@@ -341,7 +341,7 @@ function parseCSV(csvText) {
   };
 }
 
-// Fallback de contingência (zerado por padrão para Junho começar limpo)
+// Inicializadores vazios para Junho
 const STATIC = {};
 COURSE_ORDER.forEach(k => {
   STATIC[k] = { 
@@ -367,6 +367,7 @@ function makeChart(id, config) {
 
 function buildResumoPage(courseData) {
   const el = document.getElementById('page-resumo');
+  if (!el) return;
   const totalInv   = COURSE_ORDER.reduce((a,k)=>a+(courseData[k]?.totals.inv||0),0);
   const totalLeads = COURSE_ORDER.reduce((a,k)=>a+(courseData[k]?.totals.leads||0),0);
   const cplMedio   = totalLeads>0 ? totalInv/totalLeads : 0;
@@ -461,17 +462,20 @@ function buildResumoPage(courseData) {
     </div>`;
 
   const labels = COURSE_ORDER.map(k=>COURSE_CONFIG[k].name);
+  
+  // CORRIGIDO: Corrigida a aspas simples que quebrava o script
   makeChart('c-resumo-inv',{type:'bar',data:{labels,datasets:[
     {label:'Meta',   data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_inv||0),  backgroundColor:'#378ADD',borderRadius:3},
-    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_inv||0),  backgroundColor:#1D9E75',borderRadius:3},
-    {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_inv||0), backgroundColor:#7F77DD',borderRadius:3},
+    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_inv||0),  backgroundColor:'#1D9E75',borderRadius:3},
+    {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_inv||0), backgroundColor:'#7F77DD',borderRadius:3},
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
     scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc},ticks:{callback:v=>'R$'+Math.round(v/1000)+'k'}}}}});
 
+  // CORRIGIDO: Corrigida a aspas simples que quebrava o script
   makeChart('c-resumo-leads',{type:'bar',data:{labels,datasets:[
     {label:'Meta',   data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_leads||0), backgroundColor:'#378ADD',borderRadius:3},
-    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_leads||0), backgroundColor:#1D9E75',borderRadius:3},
-    {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_leads||0),backgroundColor:#7F77DD',borderRadius:3},
+    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_leads||0), backgroundColor:'#1D9E75',borderRadius:3},
+    {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_leads||0),backgroundColor:'#7F77DD',borderRadius:3},
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
     scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc}}}}});
 }
@@ -503,7 +507,10 @@ function buildCoursePage(key, courseData) {
     return `<span><span class="legend-dot" style="background:${col}"></span>${ch}</span>`;
   }).join('');
 
-  document.getElementById('page-'+key).innerHTML = `
+  const targetEl = document.getElementById('page-'+key);
+  if(!targetEl) return;
+
+  targetEl.innerHTML = `
     <h2 class="page-title">${cfg.name}</h2>
     <p class="page-subtitle">Detalhamento de campanhas — Junho 2026</p>
 
@@ -562,18 +569,22 @@ document.getElementById('main-nav').addEventListener('click', e => {
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   tab.classList.add('active');
-  document.getElementById('page-'+tab.dataset.page).classList.add('active');
+  const targetPage = document.getElementById('page-'+tab.dataset.page);
+  if(targetPage) targetPage.classList.add('active');
 });
 
 // ══════════════════════════════════════════════
-// FETCH & INIT VIA GOOGLE APPS SCRIPT
+// FETCH & INIT
 // ══════════════════════════════════════════════
 function renderDash(courseData) {
   buildResumoPage(courseData);
   COURSE_ORDER.forEach(k => buildCoursePage(k, courseData));
   const now = new Date();
   const ts = `Atualizado em ${now.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}`;
-  document.getElementById('update-time').textContent = ts;
+  
+  const ut = document.getElementById('update-time');
+  if (ut) ut.textContent = ts;
+  
   const lu = document.getElementById('last-up');
   if (lu) lu.textContent = '· ' + ts;
   
@@ -581,17 +592,19 @@ function renderDash(courseData) {
   if (loader) loader.style.display = 'none';
 }
 
+// CORRIGIDO: Adicionado suporte nativo a redirecionamento seguro de macros do Google
 async function fetchFromAppsScript(gid) {
   try {
     const url = `${SCRIPT_BASE_URL}?gid=${gid}&_t=${new Date().getTime()}`;
-    const res = await fetch(url);
+    // O parâmetro 'follow' garante que o navegador siga o link temporário do Google Sheets
+    const res = await fetch(url, { method: 'GET', redirect: 'follow' });
     if (!res.ok) return null;
     const text = await res.text();
     if (text && text.length > 50 && !text.startsWith('<')) {
       return text;
     }
   } catch(e) {
-    console.error(`Falha ao buscar dados da aba GID ${gid}:`, e);
+    console.error(`Falha ao buscar dados do GID ${gid}:`, e);
   }
   return null;
 }
@@ -613,24 +626,22 @@ async function fetchCourse(key, courseData) {
       };
     }
   } catch(e) {
-    console.error(`Erro ao processar dados da chave ${key}:`, e);
+    console.error(`Erro ao processar dados de ${key}:`, e);
   }
 }
 
 async function loadData() {
   const courseData = {};
-  
-  // Renderiza imediatamente a estrutura básica limpa (UX instantânea)
   COURSE_ORDER.forEach(k => { courseData[k] = JSON.parse(JSON.stringify(STATIC[k])); });
+  
+  // Renderiza a casca em branco imediatamente (Tira a tela preta instantaneamente)
   renderDash(courseData);
 
-  // Mecanismo de segurança (Garante a saída do loading mesmo em falhas críticas da API)
+  // Fail-safe de 3 segundos garantido: Se a API sumir, o loading cai de qualquer jeito
   const failSafeTimeout = setTimeout(() => {
-    console.warn("Aviso: Resposta da API excedeu o tempo limite. Liberando interface.");
     renderDash(courseData);
-  }, 6000);
+  }, 3000);
 
-  // Executa chamadas paralelas assíncronas
   const fetches = COURSE_ORDER.map(key =>
     fetchCourse(key, courseData).then(() => {
       buildCoursePage(key, courseData);
@@ -642,6 +653,7 @@ async function loadData() {
   renderDash(courseData);
 }
 
+// Inicia
 loadData();
 </script>
 </body>
