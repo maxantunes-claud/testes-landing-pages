@@ -137,8 +137,8 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 <div id="page-congresso" class="page"></div>
 
 <script>
-// Substitua o hash abaixo caso crie uma nova implantacao no Apps Script
-const APPS_SCRIPT_API = 'https://script.google.com/macros/s/AKfycbzJkdBvRuczfybaaPqi6n9aZNPh25Co6kT3pjRBHfTozxxXTN9KR7hyGLigFcZhVu_b0Q/exec';
+// Link da nova implantacao do Apps Script inserido na linha abaixo
+const APPS_SCRIPT_API = 'https://script.google.com/macros/s/AKfycbyTEH45rBiRGSWaHy6cL-k2XAXlRAk9U1UmC32sD6ja/exec';
 
 const GIDS = {
   cca:       '181204639', cpd: '279767688', ccf: '811264268',
@@ -259,15 +259,15 @@ function buildResumoPage(courseData) {
 
   const labels = COURSE_ORDER.map(k=>COURSE_CONFIG[k].name);
   makeChart('c-resumo-inv',{type:'bar',data:{labels,datasets:[
-    {label:'Meta', data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_inv||0), backgroundColor:'#378ADD',borderRadius:3},
-    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_inv||0), backgroundColor:'#1D9E75',borderRadius:3},
-    {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_inv||0), backgroundColor:'#7F77DD',borderRadius:3},
+    {label:'Meta', data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_inv||0), backgroundColor:#378ADD',borderRadius:3},
+    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_inv||0), backgroundColor:#1D9E75',borderRadius:3},
+    {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_inv||0), backgroundColor:#7F77DD',borderRadius:3},
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc},ticks:{callback:v=>'R$'+Math.round(v/1000)+'k'}}}}});
 
   makeChart('c-resumo-leads',{type:'bar',data:{labels,datasets:[
-    {label:'Meta', data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_leads||0), backgroundColor:'#378ADD',borderRadius:3},
-    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_leads||0), backgroundColor:'#1D9E75',borderRadius:3},
-    {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_leads||0),backgroundColor:'#7F77DD',borderRadius:3},
+    {label:'Meta', data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_leads||0), backgroundColor:#378ADD',borderRadius:3},
+    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_leads||0), backgroundColor:#1D9E75',borderRadius:3},
+    {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_leads||0),backgroundColor:#7F77DD',borderRadius:3},
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc}}}}});
 }
 
