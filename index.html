@@ -98,7 +98,7 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 <div class="loading-overlay" id="loading">
   <div class="loading-logo">LEC</div>
   <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
-  <div class="loading-text">Sincronizando dados de Junho (Drive Pessoal)...</div>
+  <div class="loading-text">Sincronizando dados de Junho (API Livre de CORS)...</div>
 </div>
 
 <div class="header">
@@ -138,20 +138,19 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 
 <script>
 // ID da sua planilha unificada do Google Drive Pessoal
-// ID público da planilha pessoal (formato /e/ da URL de publicação)
-const SPREADSHEET_ID = '2PACX-1vTGATUvlgrY0vSlSFziHis19vbK3ZThmK1PkdN28MqIBDJGEK2UZYq-mHXWZTJ4oLoCnv-A8NWK3fFj';
+const SPREADSHEET_ID = '1NK66oLF9GyJI4VEIjbzCNOLGXVHEqEw1hj-LzKxD9lc';
 
-// GIDs mapeados da exportação pessoal
-const GIDS = {
-  cca:       '373281884',  
-  cpd:       '279767688', 
-  ccf:       '811264268',
-  ciic:      '1762721591', 
-  ops:       '1781734748', 
-  saude:     '1439976497',
-  comp:      '940396083', 
-  mbalid:    '49591581', 
-  congresso: '1607300262'
+// MAPEAMENTO SEGURO POR NOME DA ABA: Resolve o problema de GIDs trocados!
+const SHEET_NAMES = {
+  cca:       'CCA',  
+  cpd:       'CPD', 
+  ccf:       'CCF',
+  ciic:      'CIIC', 
+  ops:       'Legal OPS', 
+  saude:     'Saúde (CAS)',
+  comp:      'COMP', 
+  mbalid:    'MBA LID', 
+  congresso: 'Congresso'
 };
 
 const COURSE_CONFIG = {
@@ -167,7 +166,7 @@ const COURSE_CONFIG = {
 };
 const COURSE_ORDER = ['cca','cpd','ccf','ciic','ops','saude','comp','mbalid','congresso'];
 const DAYS = Array.from({length:30},(_,i)=>`${i+1}/6`);
-const EXCEL_BASE = 46173; // Serial de 31/maio → dia 1 de junho = serial 46174 = EXCEL_BASE + 1 
+const EXCEL_BASE = 46173; 
 
 const brl  = v => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
 const brl2 = v => 'R$ ' + (v||0).toFixed(2).replace('.',',');
@@ -180,18 +179,15 @@ Chart.defaults.font.size   = 11;
 Chart.defaults.color       = tc;
 
 function parseCSV(csvText) {
-  const parsed = Papa.parse(csvText, { skipEmptyLines: false });
+  const parsed = Papa.parse(csvText, { skipEmptyLines: true });
   const rows = parsed.data;
   const header = rows[0] || [];
   const hasLinkedin = header.some(h => /linkedin/i.test(h));
 
   let totalsRow = null;
-  for (let i = 1; i < Math.min(rows.length, 8); i++) {
+  for (let i = 1; i < Math.min(rows.length, 6); i++) {
     const r = rows[i];
-    if (!r || !r[0]) continue;
-    const firstCol = String(r[0]).trim();
-    const isNotDate = isNaN(parseInt(firstCol)) || parseInt(firstCol) < 40000;
-    if (isNotDate && num(r[1]) > 0) { totalsRow = r; break; }
+    if (r && (r[0] === '#REF!' || r[0] === '' || isNaN(parseInt(r[0]))) && num(r[1]) > 0) { totalsRow = r; break; }
   }
 
   const dailyRows = [];
@@ -270,7 +266,6 @@ function buildResumoPage(courseData) {
 
   const labels = COURSE_ORDER.map(k=>COURSE_CONFIG[k].name);
   
-  // FIX: Adicionada aspas simples corrigindo o erro fatal de sintaxe do Chart.js
   makeChart('c-resumo-inv',{type:'bar',data:{labels,datasets:[
     {label:'Meta', data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_inv||0), backgroundColor:'#378ADD',borderRadius:3},
     {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_inv||0), backgroundColor:'#1D9E75',borderRadius:3},
@@ -331,44 +326,25 @@ function renderDash(courseData) {
   const now = new Date(); const ts = `Atualizado em ${now.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}`;
   const ut = document.getElementById('update-time'); if (ut) ut.textContent = ts;
   const lu = document.getElementById('last-up'); if (lu) lu.textContent = '· ' + ts;
-  
-  // Remove de forma definitiva a cortina de carregamento
   const loader = document.getElementById('loading'); if (loader) loader.style.display = 'none';
 }
 
-async function fetchFromGoogleSheets(gid) {
-  // Build the published CSV URL using the /e/ public export format
-  const BASE = 'https://docs.google.com/spreadsheets/d/e/' + SPREADSHEET_ID + '/pub';
-  const url = `${BASE}?gid=${gid}&single=true&output=csv&cachebust=${Date.now()}`;
-  
-  // Try direct fetch first (works when hosted on GitHub Pages / HTTPS)
+// NOVA FUNÇÃO: Consome via API Viz Query oficial do Google Docs Livre de CORS corporativo
+async function fetchFromGoogleSheets(courseKey) {
   try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (res.ok) {
-      const text = await res.text();
-      if (text && text.length > 50 && !text.startsWith('<html') && !text.startsWith('<!')) {
-        return text;
-      }
-    }
-  } catch(e) {}
-
-  // Fallback: try allorigins CORS proxy
-  try {
-    const proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-    const res = await fetch(proxy, { cache: 'no-store' });
-    if (res.ok) {
-      const text = await res.text();
-      if (text && text.length > 50 && !text.startsWith('<html') && !text.startsWith('<!')) {
-        return text;
-      }
-    }
-  } catch(e) { console.warn(`Proxy também falhou para GID ${gid}`); }
-
+    const sheetName = encodeURIComponent(SHEET_NAMES[courseKey]);
+    // Endpoint oficial do Google que converte qualquer planilha pessoal em CSV de forma assíncrona limpa
+    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${sheetName}&_t=${new Date().getTime()}`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const text = await res.text();
+    if (text && text.length > 50 && !text.startsWith('<html')) { return text; }
+  } catch(e) { console.error(`Falha na sincronização da aba ${courseKey}:`, e); }
   return null;
 }
 
 async function fetchCourse(key, courseData) {
-  const gid = GIDS[key]; const csv = await fetchFromGoogleSheets(gid); if (!csv) return; 
+  const csv = await fetchFromGoogleSheets(key); if (!csv) return; 
   try {
     const parsed = parseCSV(csv);
     if (parsed.totals.inv > 0 || parsed.totals.leads > 0 || parsed.totals.m_inv > 0) {
@@ -379,24 +355,14 @@ async function fetchCourse(key, courseData) {
 
 async function loadData() {
   const courseData = {}; COURSE_ORDER.forEach(k => { courseData[k] = JSON.parse(JSON.stringify(STATIC[k])); });
-  
-  // Renderiza a casca limpa inicial imediatamente
   renderDash(courseData);
 
-  // Failsafe: se após 8s ainda não terminou, renderiza com o que tiver
-  const failSafeTimeout = setTimeout(() => {
-    console.warn("Timeout atingido — renderizando com dados parciais.");
-    renderDash(courseData);
-  }, 8000);
+  // Sistema de escape visual (fail-safe) forçado para 3 segundos
+  const failSafeTimeout = setTimeout(() => { renderDash(courseData); }, 3000);
+  const fetches = COURSE_ORDER.map(key => fetchCourse(key, courseData).then(() => { buildCoursePage(key, courseData); }));
 
-  const fetches = COURSE_ORDER.map(key =>
-    fetchCourse(key, courseData).then(() => {
-      buildCoursePage(key, courseData);
-    })
-  );
-
-  await Promise.allSettled(fetches);
-  clearTimeout(failSafeTimeout);
+  await Promise.allSettled(fetches); 
+  clearTimeout(failSafeTimeout); 
   renderDash(courseData);
 }
 
