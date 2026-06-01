@@ -170,7 +170,7 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 <div class="loading-overlay" id="loading">
   <div class="loading-logo">LEC</div>
   <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
-  <div class="loading-text">Carregando dados em tempo real da planilha…</div>
+  <div class="loading-text">Sincronizando dados com a planilha de Junho…</div>
 </div>
 
 <div class="header">
@@ -178,7 +178,7 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
     <div class="lec-logo">L</div>
     <div class="header-title">
       <h1>LEC — Performance de Mídia Paga</h1>
-      <p>Gestão de Campanhas · Maio 2026</p>
+      <p>Gestão de Campanhas · Junho 2026</p>
     </div>
   </div>
   <div class="header-badge"><div class="pulse"></div><span id="update-time">Sincronizando…</span></div>
@@ -210,7 +210,7 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 
 <script>
 // ══════════════════════════════════════════════
-// CONFIG — Utilizando a sua API estável do Apps Script
+// CONFIG — Atualizado com a sua URL estável da API
 // ══════════════════════════════════════════════
 const SCRIPT_BASE_URL = 'https://script.google.com/macros/s/AKfycbzJkdBvRuczfybaaPqi6n9aZNPh25Co6kT3pjRBHfTozxxXTN9KR7hyGLigFcZhVu_b0Q/exec';
 
@@ -238,8 +238,10 @@ const COURSE_CONFIG = {
   congresso:{ name:'Congresso',  budget:{meta:9700,google:17000,linkedin:1000,total:27700},channels:['Meta','Google','LinkedIn'], cpl_meta:0     },
 };
 const COURSE_ORDER = ['cca','cpd','ccf','ciic','ops','saude','comp','mbalid','congresso'];
-const DAYS = Array.from({length:29},(_,i)=>`${i+1}/5`);
-const EXCEL_BASE = 46142; 
+
+// Ajustado para Junho (30 dias / Mês 6)
+const DAYS = Array.from({length:30},(_,i)=>`${i+1}/6`);
+const EXCEL_BASE = 46173; // Serial base correto para Junho/2026
 
 // ══════════════════════════════════════════════
 // HELPERS
@@ -275,9 +277,9 @@ function parseCSV(csvText) {
     const r = rows[i];
     if (!r || !r[0]) continue;
     const serial = parseInt(r[0]);
-    if (isNaN(serial) || serial < 46140 || serial > 46175) continue;
+    if (isNaN(serial) || serial < 46170 || serial > 46210) continue; // Range expandido para o mês 06
     const day = serial - EXCEL_BASE;
-    if (day < 1 || day > 31) continue;
+    if (day < 1 || day > 30) continue;
 
     if (hasLinkedin) {
       dailyRows.push({ day,
@@ -296,7 +298,7 @@ function parseCSV(csvText) {
     }
   }
 
-  const arr = key => Array.from({length:29},(_,i) => {
+  const arr = key => Array.from({length:30},(_,i) => {
     const row = dailyRows.find(r => r.day === i+1);
     return row ? row[key] : 0;
   });
@@ -339,18 +341,16 @@ function parseCSV(csvText) {
   };
 }
 
-// Fallback estático de segurança inteligente
-const STATIC = {
-  cca: { totals:{m_inv:5367,m_leads:257,g_inv:2266,g_leads:66,l_inv:867,l_leads:4,inv:8499,leads:327,rd:291}, meta_inv:[372,372,372,372,372,372,372,372,372,372,172,185,16,11,11,11,16,15,11,10,14,79,9,171,354,291,270,0,0], meta_leads:[19,19,24,23,23,12,10,12,5,5,11,14,1,0,1,0,4,1,2,0,1,5,0,10,21,15,16,3,0], g_inv:[148,148,148,148,148,148,148,148,148,148,50,51,38,27,36,38,26,34,32,32,32,35,27,40,120,77,89,0,0], g_leads:[6,2,7,5,7,3,7,0,2,2,0,3,1,1,4,3,0,0,1,0,0,1,2,2,3,2,0,2,0], l_inv:[87,87,87,87,87,87,87,87,87,87,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], l_leads:[0,0,0,0,3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] },
-  cpd: { totals:{m_inv:6559,m_leads:116,g_inv:2649,g_leads:140,l_inv:0,l_leads:0,inv:9207,leads:256,rd:257}, meta_inv:[9,9,9,9,9,9,9,9,9,189,346,327,374,356,333,326,320,369,374,328,328,328,363,363,363,363,363,374,0], meta_leads:[1,0,0,1,0,0,0,0,4,8,7,4,9,3,4,9,2,8,4,5,1,7,7,3,10,9,7,3,0], g_inv:[13,13,13,13,13,13,13,13,13,115,130,210,132,152,163,108,101,121,149,136,136,136,126,126,126,126,127,0,0], g_leads:[0,1,1,1,0,0,1,0,10,6,14,7,7,9,7,5,11,9,6,8,2,4,5,5,5,8,5,3,0], l_inv:Array(29).fill(0), l_leads:Array(29).fill(0) },
-  ccf: { totals:{m_inv:4802,m_leads:92,g_inv:994,g_leads:0,l_inv:0,l_leads:0,inv:5796,leads:92,rd:98}, meta_inv:[213,213,213,213,213,213,213,213,213,213,213,213,213,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,0], meta_leads:Array(29).fill(0), g_inv:[39,39,39,39,39,39,39,39,39,39,39,39,39,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0], g_leads:Array(29).fill(0), l_inv:Array(29).fill(0), l_leads:Array(29).fill(0) },
-  ciic: { totals:{m_inv:4754,m_leads:92,g_inv:1283,g_leads:16,l_inv:0,l_leads:0,inv:6037,leads:108,rd:104}, meta_inv:[178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,0,0], meta_leads:[3,3,2,2,1,4,4,2,2,2,2,2,2,2,2,2,2,2,2,2,3,4,3,4,4,4,3,3,0], g_inv:[39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,0,0], g_leads:[3,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0], l_inv:Array(29).fill(0), l_leads:Array(29).fill(0) },
-  ops: { totals:{m_inv:11551,m_leads:217,g_inv:1327,g_leads:20,l_inv:0,l_leads:0,inv:12878,leads:237,rd:221}, meta_inv:[294,294,294,294,294,294,294,294,294,294,294,294,294,294,294,294,294,294,294,294,294,294,450,450,450,450,450,374,0], meta_leads:[1,5,2,1,1,4,3,7,7,9,7,6,4,7,7,6,8,6,9,7,6,5,10,13,12,11,10,3,0], g_inv:[31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,57,57,57,57,57,47,0], g_leads:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,4,4,3,3,0], l_inv:Array(29).fill(0), l_leads:Array(29).fill(0) },
-  saude: { totals:{m_inv:5891,m_leads:91,g_inv:2982,g_leads:16,l_inv:0,l_leads:0,inv:8874,leads:107,rd:106}, meta_inv:[207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,207,0,0], meta_leads:[3,5,5,4,3,3,4,2,3,5,3,3,2,3,3,3,4,3,4,3,4,4,4,4,4,4,3,0,0], g_inv:[84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,0,0], g_leads:[3,1,0,1,3,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0], l_inv:Array(29).fill(0), l_leads:Array(29).fill(0) },
-  comp: { totals:{m_inv:4434,m_leads:29,g_inv:426,g_leads:7,l_inv:0,l_leads:0,inv:4860,leads:36,rd:39}, meta_inv:[172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,172,0,0], meta_leads:[2,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], g_inv:[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,0,0], g_leads:[0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,1,0,0,0,0], l_inv:Array(29).fill(0), l_leads:Array(29).fill(0) },
-  mbalid: { totals:{m_inv:2826,m_leads:89,g_inv:0,g_leads:0,l_inv:1641,l_leads:14,inv:4467,leads:103,rd:122}, meta_inv:[169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,169,0,0], meta_leads:[5,3,5,4,4,3,3,4,3,2,3,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0], g_inv:Array(29).fill(0), g_leads:Array(29).fill(0), l_inv:[32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,0,0], l_leads:[0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,0,0] },
-  congresso: { totals:{m_inv:1091,m_leads:0,g_inv:2565,g_leads:0,l_inv:731,l_leads:0,inv:4387,leads:0,rd:49}, meta_inv:[273,273,273,273,273,273,273,273,273,273,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], meta_leads:Array(29).fill(0), g_inv:[317,652,611,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], g_leads:Array(29).fill(0), l_inv:[183,183,183,183,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], l_leads:Array(29).fill(0) },
-};
+// Fallback de contingência (zerado por padrão para Junho começar limpo)
+const STATIC = {};
+COURSE_ORDER.forEach(k => {
+  STATIC[k] = { 
+    totals: { m_inv:0, m_leads:0, g_inv:0, g_leads:0, l_inv:0, l_leads:0, inv:0, leads:0, rd:0 },
+    meta_inv: Array(30).fill(0), meta_leads: Array(30).fill(0),
+    g_inv: Array(30).fill(0), g_leads: Array(30).fill(0),
+    l_inv: Array(30).fill(0), l_leads: Array(30).fill(0)
+  };
+});
 
 let allCharts = {};
 
@@ -374,7 +374,7 @@ function buildResumoPage(courseData) {
   const verbaCards = COURSE_ORDER.map(k => {
     const cfg = COURSE_CONFIG[k];
     const d   = courseData[k]?.totals || {};
-    const pct = Math.min((d.inv||0)/cfg.budget.total, 1);
+    const pct = cfg.budget.total > 0 ? Math.min((d.inv||0)/cfg.budget.total, 1) : 0;
     const fill = pct>0.9?'#D63B2F':pct>0.7?'#EF9F27':'#1D9E75';
     const badgeBg = pct>0.9?'#FAECEB':pct>0.7?'#FEF3C7':'#E1F5EE';
     const badgeColor = pct>0.9?'#D63B2F':pct>0.7?'#B45309':'#0F6E56';
@@ -416,14 +416,14 @@ function buildResumoPage(courseData) {
 
   el.innerHTML = `
     <h2 class="page-title">Resumo Geral</h2>
-    <p class="page-subtitle">Consolidado de todos os cursos — Maio 2026 <span class="last-update" id="last-up"></span></p>
+    <p class="page-subtitle">Consolidado de todos os cursos — Junho 2026 <span class="last-update" id="last-up"></span></p>
 
     <p class="section-label">Totais</p>
     <div class="metric-grid">
       <div class="metric"><div class="metric-label">Investimento total</div><div class="metric-value">${brl(totalInv)}</div><div class="metric-sub">todos os cursos</div></div>
       <div class="metric m-teal"><div class="metric-label">Leads totais (ADS)</div><div class="metric-value">${totalLeads.toLocaleString('pt-BR')}</div><div class="metric-sub">todos os canais</div></div>
       <div class="metric m-purple"><div class="metric-label">CPL médio geral</div><div class="metric-value">${cplMedio>0?brl2(cplMedio):'—'}</div><div class="metric-sub">investimento ÷ leads</div></div>
-      <div class="metric m-blue"><div class="metric-label">Cursos ativos</div><div class="metric-value">9</div><div class="metric-sub">com dados em maio</div></div>
+      <div class="metric m-blue"><div class="metric-label">Cursos ativos</div><div class="metric-value">9</div><div class="metric-sub">com dados em junho</div></div>
     </div>
 
     <hr class="divider">
@@ -462,14 +462,14 @@ function buildResumoPage(courseData) {
 
   const labels = COURSE_ORDER.map(k=>COURSE_CONFIG[k].name);
   makeChart('c-resumo-inv',{type:'bar',data:{labels,datasets:[
-    {label:'Meta',   data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_inv||0),  backgroundColor:#378ADD',borderRadius:3},
+    {label:'Meta',   data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_inv||0),  backgroundColor:'#378ADD',borderRadius:3},
     {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_inv||0),  backgroundColor:#1D9E75',borderRadius:3},
     {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_inv||0), backgroundColor:#7F77DD',borderRadius:3},
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
     scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc},ticks:{callback:v=>'R$'+Math.round(v/1000)+'k'}}}}});
 
   makeChart('c-resumo-leads',{type:'bar',data:{labels,datasets:[
-    {label:'Meta',   data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_leads||0), backgroundColor:#378ADD',borderRadius:3},
+    {label:'Meta',   data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_leads||0), backgroundColor:'#378ADD',borderRadius:3},
     {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_leads||0), backgroundColor:#1D9E75',borderRadius:3},
     {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_leads||0),backgroundColor:#7F77DD',borderRadius:3},
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
@@ -483,7 +483,7 @@ function buildCoursePage(key, courseData) {
   const budget = cfg.budget;
   const cpl_total = t.leads>0 ? t.inv/t.leads : 0;
   const sobra = budget.total - t.inv;
-  const pctUsado = (t.inv/budget.total*100).toFixed(1);
+  const pctUsado = budget.total > 0 ? (t.inv/budget.total*100).toFixed(1) : 0;
 
   const channelCards = cfg.channels.map(ch => {
     const ck = ch==='LinkedIn'?'l':ch==='Google'?'g':'m';
@@ -505,7 +505,7 @@ function buildCoursePage(key, courseData) {
 
   document.getElementById('page-'+key).innerHTML = `
     <h2 class="page-title">${cfg.name}</h2>
-    <p class="page-subtitle">Detalhamento de campanhas — Maio 2026</p>
+    <p class="page-subtitle">Detalhamento de campanhas — Junho 2026</p>
 
     <p class="section-label">Visão geral</p>
     <div class="metric-grid">
@@ -538,8 +538,8 @@ function buildCoursePage(key, courseData) {
     const col=ch==='Meta'?'#378ADD':ch==='Google'?'#1D9E75':'#7F77DD';
     const colA=ch==='Meta'?'rgba(55,138,221,0.08)':ch==='Google'?'rgba(29,158,117,0.08)':'rgba(127,119,221,0.08)';
     const dash=ch==='Google'?[4,3]:ch==='LinkedIn'?[2,4]:undefined;
-    dsLeads.push({label:ch,data:d[ck+'_leads']||Array(29).fill(0),backgroundColor:col,borderRadius:2});
-    const invDs={label:ch,data:d[ck+'_inv']||Array(29).fill(0),borderColor:col,backgroundColor:colA,fill:true,tension:0.3,pointRadius:2,borderWidth:2};
+    dsLeads.push({label:ch,data:d[ck+'_leads']||Array(30).fill(0),backgroundColor:col,borderRadius:2});
+    const invDs={label:ch,data:d[ck+'_inv']||Array(30).fill(0),borderColor:col,backgroundColor:colA,fill:true,tension:0.3,pointRadius:2,borderWidth:2};
     if(dash) invDs.borderDash=dash;
     dsInv.push(invDs);
   });
@@ -576,17 +576,17 @@ function renderDash(courseData) {
   document.getElementById('update-time').textContent = ts;
   const lu = document.getElementById('last-up');
   if (lu) lu.textContent = '· ' + ts;
-  document.getElementById('loading').style.display = 'none';
+  
+  const loader = document.getElementById('loading');
+  if (loader) loader.style.display = 'none';
 }
 
-// Consome a API contornando nativamente restrições de CORS
 async function fetchFromAppsScript(gid) {
   try {
     const url = `${SCRIPT_BASE_URL}?gid=${gid}&_t=${new Date().getTime()}`;
     const res = await fetch(url);
     if (!res.ok) return null;
     const text = await res.text();
-    // Validação básica da resposta CSV
     if (text && text.length > 50 && !text.startsWith('<')) {
       return text;
     }
@@ -599,7 +599,7 @@ async function fetchFromAppsScript(gid) {
 async function fetchCourse(key, courseData) {
   const gid = GIDS[key];
   const csv = await fetchFromAppsScript(gid);
-  if (!csv) return; // Mantém o dado estático caso a requisição falhe
+  if (!csv) return; 
   
   try {
     const parsed = parseCSV(csv);
@@ -620,11 +620,17 @@ async function fetchCourse(key, courseData) {
 async function loadData() {
   const courseData = {};
   
-  // Inicializa imediatamente com os dados estáticos de segurança (UX imediata)
+  // Renderiza imediatamente a estrutura básica limpa (UX instantânea)
   COURSE_ORDER.forEach(k => { courseData[k] = JSON.parse(JSON.stringify(STATIC[k])); });
   renderDash(courseData);
 
-  // Executa as chamadas em paralelo para alimentar com dados reais da planilha
+  // Mecanismo de segurança (Garante a saída do loading mesmo em falhas críticas da API)
+  const failSafeTimeout = setTimeout(() => {
+    console.warn("Aviso: Resposta da API excedeu o tempo limite. Liberando interface.");
+    renderDash(courseData);
+  }, 6000);
+
+  // Executa chamadas paralelas assíncronas
   const fetches = COURSE_ORDER.map(key =>
     fetchCourse(key, courseData).then(() => {
       buildCoursePage(key, courseData);
@@ -632,7 +638,8 @@ async function loadData() {
   );
 
   await Promise.allSettled(fetches);
-  buildResumoPage(courseData);
+  clearTimeout(failSafeTimeout);
+  renderDash(courseData);
 }
 
 loadData();
