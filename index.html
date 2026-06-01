@@ -9,84 +9,36 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --orange: #ff8d22;
-  --orange-dark: #e07010;
-  --orange-light: #fff3e8;
-  --orange-mid: rgba(255,141,34,0.15);
+  --orange: #ff8d22; --orange-dark: #e07010; --orange-light: #fff3e8; --orange-mid: rgba(255,141,34,0.15);
   --blue: #185FA5; --blue-mid: #378ADD; --blue-light: #E6F1FB;
   --teal: #0F6E56; --teal-mid: #1D9E75; --teal-light: #E1F5EE;
   --purple: #534AB7; --purple-mid: #7F77DD; --purple-light: #EEEDFE;
-  --red: #D63B2F; --red-light: #FAECEB;
-  --amber: #B45309; --amber-light: #FEF3C7;
-  --bg: #f7f6f3;
-  --surface: #ffffff;
-  --border: rgba(0,0,0,0.07);
-  --text: #1a1917;
-  --muted: #6b6a66;
-  --hint: #a09e9a;
+  --red: #D63B2F; --red-light: #FAECEB; --amber: #B45309; --amber-light: #FEF3C7;
+  --bg: #f7f6f3; --surface: #ffffff; --border: rgba(0,0,0,0.07); --text: #1a1917; --muted: #6b6a66; --hint: #a09e9a;
 }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
-
-/* ── HEADER ── */
-.header {
-  background: linear-gradient(135deg, #1a1917 0%, #2d2b28 100%);
-  padding: 0 28px;
-  display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 3px solid var(--orange);
-  position: sticky; top: 0; z-index: 200;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-}
+.header { background: linear-gradient(135deg, #1a1917 0%, #2d2b28 100%); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--orange); position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
 .header-left { display: flex; align-items: center; gap: 14px; padding: 14px 0; }
-.lec-logo {
-  width: 36px; height: 36px; border-radius: 8px;
-  background: var(--orange);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -1px;
-  flex-shrink: 0;
-}
+.lec-logo { width: 36px; height: 36px; border-radius: 8px; background: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -1px; flex-shrink: 0; }
 .header-title { line-height: 1.2; }
 .header-title h1 { font-size: 15px; font-weight: 700; color: #fff; }
 .header-title p { font-size: 11px; color: rgba(255,255,255,0.5); }
-.header-badge {
-  background: var(--orange-mid); border: 1px solid var(--orange);
-  color: var(--orange); border-radius: 20px; padding: 4px 12px;
-  font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px;
-}
+.header-badge { background: var(--orange-mid); border: 1px solid var(--orange); color: var(--orange); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
 .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
-
-/* ── NAV TABS ── */
 .nav { background: #222120; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 28px; display: flex; gap: 0; overflow-x: auto; }
-.nav-tab {
-  padding: 12px 16px; font-size: 12px; font-weight: 500;
-  color: rgba(255,255,255,0.45); cursor: pointer;
-  border-bottom: 3px solid transparent; white-space: nowrap;
-  transition: all .15s; user-select: none;
-}
+.nav-tab { padding: 12px 16px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.45); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all .15s; user-select: none; }
 .nav-tab:hover { color: rgba(255,255,255,0.8); }
 .nav-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
-
-/* ── LAYOUT ── */
 .page { display: none; padding: 24px 28px; max-width: 1280px; margin: 0 auto; }
 .page.active { display: block; }
 .page-title { font-size: 20px; font-weight: 700; margin-bottom: 3px; }
 .page-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 22px; display: flex; align-items: center; gap: 8px; }
-.section-label {
-  font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--orange); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
-}
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
 .section-label::after { content:''; flex:1; height:1px; background: var(--orange-mid); }
 hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
-
-/* ── METRIC CARDS ── */
 .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 12px; margin-bottom: 22px; }
-.metric {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 16px 18px;
-  border-top: 3px solid var(--orange);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  transition: box-shadow .2s;
-}
+.metric { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; border-top: 3px solid var(--orange); box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: box-shadow .2s; }
 .metric:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 .metric-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
 .metric-value { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
@@ -94,33 +46,19 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 .metric.m-blue { border-top-color: var(--blue-mid); }
 .metric.m-teal { border-top-color: var(--teal-mid); }
 .metric.m-purple { border-top-color: var(--purple-mid); }
-
-/* ── CHANNEL CARDS ── */
 .channel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 12px; margin-bottom: 22px; }
-.channel-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
+.channel-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .channel-header { padding: 10px 16px; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
 .channel-row { display: flex; justify-content: space-between; font-size: 12px; padding: 7px 16px; border-bottom: 1px solid var(--border); }
 .channel-row:last-child { border-bottom: none; }
 .channel-row .lbl { color: var(--muted); }
 .channel-row .val { font-weight: 600; color: var(--text); }
-
-/* ── CHART CARDS ── */
-.chart-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 18px; margin-bottom: 18px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
+.chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .chart-title { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .05em; }
 .chart-wrap { position: relative; width: 100%; }
 .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11px; color: var(--muted); margin-bottom: 10px; }
 .legend span { display: flex; align-items: center; gap: 4px; }
 .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-
-/* ── VERBA CARDS ── */
 .verba-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr)); gap: 12px; margin-bottom: 22px; }
 .verba-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .verba-header { padding: 11px 16px; background: #1a1917; color: #fff; font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
@@ -134,8 +72,6 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 .verba-row .val-set { color: var(--blue); font-weight: 600; }
 .verba-row .val-gas { color: var(--red); font-weight: 600; }
 .verba-row .val-sob { color: var(--teal); font-weight: 600; }
-
-/* ── RESUMO TABLE ── */
 .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .resumo-table { width: 100%; border-collapse: collapse; font-size: 12px; background: var(--surface); }
 .resumo-table th { background: #1a1917; color: #fff; padding: 11px 14px; text-align: left; font-size: 11px; font-weight: 600; white-space: nowrap; }
@@ -148,20 +84,12 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 .badge-warn{ background: var(--amber-light); color: var(--amber); }
 .badge-bad { background: var(--red-light);   color: var(--red); }
 .badge-na  { background: #f0f0f0; color: var(--muted); }
-
-/* ── LOADING ── */
-.loading-overlay {
-  position: fixed; inset: 0; background: #1a1917;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999;
-  gap: 20px;
-}
+.loading-overlay { position: fixed; inset: 0; background: #1a1917; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; gap: 20px; }
 .loading-logo { font-size: 48px; height: 48px; font-weight: 900; color: var(--orange); letter-spacing: -3px; line-height: 1; }
 .loading-bar-wrap { width: 200px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
 .loading-bar { height: 100%; background: var(--orange); border-radius: 2px; animation: loadbar 1.8s ease-in-out infinite; }
 @keyframes loadbar { 0%{width:0;margin-left:0} 50%{width:60%;margin-left:20%} 100%{width:0;margin-left:100%} }
 .loading-text { font-size: 13px; color: rgba(255,255,255,0.5); }
-
-/* ── LAST UPDATE ── */
 .last-update { font-size: 11px; color: var(--hint); }
 </style>
 </head>
@@ -170,7 +98,7 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 <div class="loading-overlay" id="loading">
   <div class="loading-logo">LEC</div>
   <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
-  <div class="loading-text">Sincronizando dados com a planilha de Junho…</div>
+  <div class="loading-text">Sincronizando dados corporativos de Junho…</div>
 </div>
 
 <div class="header">
@@ -209,21 +137,13 @@ hr.divider { border:none; border-top: 1px solid var(--border); margin: 22px 0; }
 <div id="page-congresso" class="page"></div>
 
 <script>
-// ══════════════════════════════════════════════
-// CONFIG — Chamada direta de CSV público sem barreira de domínio corporativo
-// ══════════════════════════════════════════════
-const SPREADSHEET_ID = '1vQeV_LLsgTrTdXAVBMotyJcMw3wnb7sTtX_xmDmGTXheXdFAsN6pQCrE9ulM4oDCyFLpq2UXisZJ3qR';
+// Substitua o hash abaixo caso crie uma nova implantacao no Apps Script
+const APPS_SCRIPT_API = 'https://script.google.com/macros/s/AKfycbzJkdBvRuczfybaaPqi6n9aZNPh25Co6kT3pjRBHfTozxxXTN9KR7hyGLigFcZhVu_b0Q/exec';
 
 const GIDS = {
-  cca:       '181204639',
-  cpd:       '279767688',
-  ccf:       '811264268',
-  ciic:      '1762721591',
-  ops:       '1781734748',
-  saude:     '1439976497',
-  comp:      '940396083',
-  mbalid:    '49591581',
-  congresso: '1607300262'
+  cca:       '181204639', cpd: '279767688', ccf: '811264268',
+  ciic:      '1762721591', ops: '1781734748', saude: '1439976497',
+  comp:      '940396083', mbalid: '49591581', congresso: '1607300262'
 };
 
 const COURSE_CONFIG = {
@@ -238,14 +158,9 @@ const COURSE_CONFIG = {
   congresso:{ name:'Congresso',  budget:{meta:9700,google:17000,linkedin:1000,total:27700},channels:['Meta','Google','LinkedIn'], cpl_meta:0     },
 };
 const COURSE_ORDER = ['cca','cpd','ccf','ciic','ops','saude','comp','mbalid','congresso'];
-
-// Junho (30 dias / Mês 6)
 const DAYS = Array.from({length:30},(_,i)=>`${i+1}/6`);
 const EXCEL_BASE = 46173; 
 
-// ══════════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════════
 const brl  = v => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
 const brl2 = v => 'R$ ' + (v||0).toFixed(2).replace('.',',');
 const num  = v => { const f=parseFloat(String(v).replace(',','.')); return isNaN(f)?0:f; };
@@ -259,17 +174,13 @@ Chart.defaults.color       = tc;
 function parseCSV(csvText) {
   const parsed = Papa.parse(csvText, { skipEmptyLines: true });
   const rows = parsed.data;
-
   const header = rows[0] || [];
   const hasLinkedin = header.some(h => /linkedin/i.test(h));
 
   let totalsRow = null;
   for (let i = 1; i < Math.min(rows.length, 6); i++) {
     const r = rows[i];
-    if (r && (r[0] === '#REF!' || r[0] === '' || isNaN(parseInt(r[0]))) && num(r[1]) > 0) {
-      totalsRow = r;
-      break;
-    }
+    if (r && (r[0] === '#REF!' || r[0] === '' || isNaN(parseInt(r[0]))) && num(r[1]) > 0) { totalsRow = r; break; }
   }
 
   const dailyRows = [];
@@ -282,369 +193,163 @@ function parseCSV(csvText) {
     if (day < 1 || day > 30) continue;
 
     if (hasLinkedin) {
-      dailyRows.push({ day,
-        m_inv:num(r[1]), m_leads:num(r[2]),
-        g_inv:num(r[6]), g_leads:num(r[7]),
-        l_inv:num(r[11]),l_leads:num(r[12]),
-        t_inv:num(r[15]),t_leads:num(r[16]), rd:num(r[17])
-      });
+      dailyRows.push({ day, m_inv:num(r[1]), m_leads:num(r[2]), g_inv:num(r[6]), g_leads:num(r[7]), l_inv:num(r[11]), l_leads:num(r[12]), t_inv:num(r[15]), t_leads:num(r[16]), rd:num(r[17]) });
     } else {
-      dailyRows.push({ day,
-        m_inv:num(r[1]), m_leads:num(r[2]),
-        g_inv:num(r[6]), g_leads:num(r[7]),
-        l_inv:0,         l_leads:0,
-        t_inv:num(r[10]),t_leads:num(r[11]), rd:num(r[12])
-      });
+      dailyRows.push({ day, m_inv:num(r[1]), m_leads:num(r[2]), g_inv:num(r[6]), g_leads:num(r[7]), l_inv:0, l_leads:0, t_inv:num(r[10]), t_leads:num(r[11]), rd:num(r[12]) });
     }
   }
 
-  const arr = key => Array.from({length:30},(_,i) => {
-    const row = dailyRows.find(r => r.day === i+1);
-    return row ? row[key] : 0;
-  });
-
+  const arr = key => Array.from({length:30},(_,i) => { const row = dailyRows.find(r => r.day === i+1); return row ? row[key] : 0; });
   let totals = {};
   if (totalsRow) {
     if (hasLinkedin) {
-      totals = {
-        m_inv:num(totalsRow[1]),  m_leads:num(totalsRow[2]),
-        g_inv:num(totalsRow[6]),  g_leads:num(totalsRow[7]),
-        l_inv:num(totalsRow[11]), l_leads:num(totalsRow[12]),
-        inv:num(totalsRow[15]),   leads:num(totalsRow[16]),  rd:num(totalsRow[17])
-      };
+      totals = { m_inv:num(totalsRow[1]), m_leads:num(totalsRow[2]), g_inv:num(totalsRow[6]), g_leads:num(totalsRow[7]), l_inv:num(totalsRow[11]), l_leads:num(totalsRow[12]), inv:num(totalsRow[15]), leads:num(totalsRow[16]), rd:num(totalsRow[17]) };
     } else {
-      totals = {
-        m_inv:num(totalsRow[1]),  m_leads:num(totalsRow[2]),
-        g_inv:num(totalsRow[6]),  g_leads:num(totalsRow[7]),
-        l_inv:0, l_leads:0,
-        inv:num(totalsRow[10]),   leads:num(totalsRow[11]), rd:num(totalsRow[12])
-      };
+      totals = { m_inv:num(totalsRow[1]), m_leads:num(totalsRow[2]), g_inv:num(totalsRow[6]), g_leads:num(totalsRow[7]), l_inv:0, l_leads:0, inv:num(totalsRow[10]), leads:num(totalsRow[11]), rd:num(totalsRow[12]) };
     }
   } else {
-    totals = {
-      m_inv: dailyRows.reduce((a,r)=>a+r.m_inv,0),
-      m_leads: dailyRows.reduce((a,r)=>a+r.m_leads,0),
-      g_inv: dailyRows.reduce((a,r)=>a+r.g_inv,0),
-      g_leads: dailyRows.reduce((a,r)=>a+r.g_leads,0),
-      l_inv: dailyRows.reduce((a,r)=>a+r.l_inv,0),
-      l_leads: dailyRows.reduce((a,r)=>a+r.l_leads,0),
-    };
+    totals = { m_inv: dailyRows.reduce((a,r)=>a+r.m_inv,0), m_leads: dailyRows.reduce((a,r)=>a+r.m_leads,0), g_inv: dailyRows.reduce((a,r)=>a+r.g_inv,0), g_leads: dailyRows.reduce((a,r)=>a+r.g_leads,0), l_inv: dailyRows.reduce((a,r)=>a+r.l_inv,0), l_leads: dailyRows.reduce((a,r)=>a+r.l_leads,0) };
     totals.inv = totals.m_inv + totals.g_inv + totals.l_inv;
     totals.leads = totals.m_leads + totals.g_leads + totals.l_leads;
     totals.rd = totals.leads;
   }
-
-  return { totals, dailyRows,
-    meta_inv: arr('m_inv'), meta_leads: arr('m_leads'),
-    g_inv: arr('g_inv'),    g_leads: arr('g_leads'),
-    l_inv: arr('l_inv'),    l_leads: arr('l_leads'),
-  };
+  return { totals, dailyRows, meta_inv: arr('m_inv'), meta_leads: arr('m_leads'), g_inv: arr('g_inv'), g_leads: arr('g_leads'), l_inv: arr('l_inv'), l_leads: arr('l_leads') };
 }
 
-// Inicializadores padrão (Caso as abas estejam vazias)
 const STATIC = {};
 COURSE_ORDER.forEach(k => {
-  STATIC[k] = { 
-    totals: { m_inv:0, m_leads:0, g_inv:0, g_leads:0, l_inv:0, l_leads:0, inv:0, leads:0, rd:0 },
-    meta_inv: Array(30).fill(0), meta_leads: Array(30).fill(0),
-    g_inv: Array(30).fill(0), g_leads: Array(30).fill(0),
-    l_inv: Array(30).fill(0), l_leads: Array(30).fill(0)
-  };
+  STATIC[k] = { totals: { m_inv:0, m_leads:0, g_inv:0, g_leads:0, l_inv:0, l_leads:0, inv:0, leads:0, rd:0 }, meta_inv: Array(30).fill(0), meta_leads: Array(30).fill(0), g_inv: Array(30).fill(0), g_leads: Array(30).fill(0), l_inv: Array(30).fill(0), l_leads: Array(30).fill(0) };
 });
 
 let allCharts = {};
-
-function destroyChart(id) {
-  if (allCharts[id]) { allCharts[id].destroy(); delete allCharts[id]; }
-}
-
-function makeChart(id, config) {
-  destroyChart(id);
-  const ctx = document.getElementById(id);
-  if (!ctx) return;
-  allCharts[id] = new Chart(ctx, config);
-}
+function destroyChart(id) { if (allCharts[id]) { allCharts[id].destroy(); delete allCharts[id]; } }
+function makeChart(id, config) { destroyChart(id); const ctx = document.getElementById(id); if (!ctx) return; allCharts[id] = new Chart(ctx, config); }
 
 function buildResumoPage(courseData) {
-  const el = document.getElementById('page-resumo');
-  if (!el) return;
+  const el = document.getElementById('page-resumo'); if (!el) return;
   const totalInv   = COURSE_ORDER.reduce((a,k)=>a+(courseData[k]?.totals.inv||0),0);
   const totalLeads = COURSE_ORDER.reduce((a,k)=>a+(courseData[k]?.totals.leads||0),0);
   const cplMedio   = totalLeads>0 ? totalInv/totalLeads : 0;
 
   const verbaCards = COURSE_ORDER.map(k => {
-    const cfg = COURSE_CONFIG[k];
-    const d   = courseData[k]?.totals || {};
-    const pct = cfg.budget.total > 0 ? Math.min((d.inv||0)/cfg.budget.total, 1) : 0;
-    const fill = pct>0.9?'#D63B2F':pct>0.7?'#EF9F27':'#1D9E75';
-    const badgeBg = pct>0.9?'#FAECEB':pct>0.7?'#FEF3C7':'#E1F5EE';
-    const badgeColor = pct>0.9?'#D63B2F':pct>0.7?'#B45309':'#0F6E56';
-    const sobra = cfg.budget.total - (d.inv||0);
-    return `<div class="verba-card">
-      <div class="verba-header">
-        <span>${cfg.name}</span>
-        <span class="pct-badge" style="background:${badgeBg};color:${badgeColor}">${(pct*100).toFixed(0)}% usado</span>
-      </div>
-      <div class="progress-wrap">
-        <div class="progress-bar"><div class="progress-fill" style="width:${(pct*100).toFixed(1)}%;background:${fill}"></div></div>
-      </div>
-      <div class="verba-row"><span class="lbl">Orçamento</span><span class="val-set">${brl(cfg.budget.total)}</span></div>
-      <div class="verba-row"><span class="lbl">Gasto</span><span class="val-gas">${brl(d.inv||0)}</span></div>
-      <div class="verba-row"><span class="lbl">Saldo</span><span class="val-sob">${brl(sobra)}</span></div>
-    </div>`;
+    const cfg = COURSE_CONFIG[k]; const d = courseData[k]?.totals || {}; const pct = cfg.budget.total > 0 ? Math.min((d.inv||0)/cfg.budget.total, 1) : 0;
+    const fill = pct>0.9?'#D63B2F':pct>0.7?'#EF9F27':'#1D9E75'; const badgeBg = pct>0.9?'#FAECEB':pct>0.7?'#FEF3C7':'#E1F5EE'; const badgeColor = pct>0.9?'#D63B2F':pct>0.7?'#B45309':'#0F6E56'; const sobra = cfg.budget.total - (d.inv||0);
+    return `<div class="verba-card"><div class="verba-header"><span>${cfg.name}</span><span class="pct-badge" style="background:${badgeBg};color:${badgeColor}">${(pct*100).toFixed(0)}% usado</span></div><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${(pct*100).toFixed(1)}%;background:${fill}"></div></div></div><div class="verba-row"><span class="lbl">Orçamento</span><span class="val-set">${brl(cfg.budget.total)}</span></div><div class="verba-row"><span class="lbl">Gasto</span><span class="val-gas">${brl(d.inv||0)}</span></div><div class="verba-row"><span class="lbl">Saldo</span><span class="val-sob">${brl(sobra)}</span></div></div>`;
   }).join('');
 
   const tableRows = COURSE_ORDER.map(k => {
-    const cfg = COURSE_CONFIG[k];
-    const d   = courseData[k]?.totals || {};
-    const cpl = d.leads>0 ? d.inv/d.leads : 0;
-    let badge = '';
-    if (!cfg.cpl_meta) badge = `<span class="badge badge-na">Sem meta</span>`;
-    else if (!d.leads)  badge = `<span class="badge badge-warn">Sem leads</span>`;
-    else if (cpl <= cfg.cpl_meta*1.1) badge = `<span class="badge badge-ok">✓ No alvo</span>`;
-    else if (cpl <= cfg.cpl_meta*1.4) badge = `<span class="badge badge-warn">⚡ Acima</span>`;
-    else badge = `<span class="badge badge-bad">✗ Crítico</span>`;
-    return `<tr>
-      <td><strong>${cfg.name}</strong></td>
-      <td>${brl(d.inv||0)}</td>
-      <td>${d.leads||0}</td>
-      <td>${cpl>0?brl2(cpl):'—'}</td>
-      <td>${brl(d.m_inv||0)}</td><td>${d.m_leads||0}</td>
-      <td>${brl(d.g_inv||0)}</td><td>${d.g_leads||0}</td>
-      <td>${badge}</td>
-    </tr>`;
+    const cfg = COURSE_CONFIG[k]; const d = courseData[k]?.totals || {}; const cpl = d.leads>0 ? d.inv/d.leads : 0;
+    let badge = ''; if (!cfg.cpl_meta) badge = `<span class="badge badge-na">Sem meta</span>`; else if (!d.leads) badge = `<span class="badge badge-warn">Sem leads</span>`; else if (cpl <= cfg.cpl_meta*1.1) badge = `<span class="badge badge-ok">✓ No alvo</span>`; else if (cpl <= cfg.cpl_meta*1.4) badge = `<span class="badge badge-warn">⚡ Acima</span>`; else badge = `<span class="badge badge-bad">✗ Crítico</span>`;
+    return `<tr><td><strong>${cfg.name}</strong></td><td>${brl(d.inv||0)}</td><td>${d.leads||0}</td><td>${cpl>0?brl2(cpl):'—'}</td><td>${brl(d.m_inv||0)}</td><td>${d.m_leads||0}</td><td>${brl(d.g_inv||0)}</td><td>${d.g_leads||0}</td><td>${badge}</td></tr>`;
   }).join('');
 
   el.innerHTML = `
-    <h2 class="page-title">Resumo Geral</h2>
-    <p class="page-subtitle">Consolidado de todos os cursos — Junho 2026 <span class="last-update" id="last-up"></span></p>
-
+    <h2 class="page-title">Resumo Geral</h2><p class="page-subtitle">Consolidado de todos os cursos — Junho 2026 <span class="last-update" id="last-up"></span></p>
     <div class="metric-grid">
       <div class="metric"><div class="metric-label">Investimento total</div><div class="metric-value">${brl(totalInv)}</div><div class="metric-sub">todos os cursos</div></div>
       <div class="metric m-teal"><div class="metric-label">Leads totais (ADS)</div><div class="metric-value">${totalLeads.toLocaleString('pt-BR')}</div><div class="metric-sub">todos os canais</div></div>
       <div class="metric m-purple"><div class="metric-label">CPL médio geral</div><div class="metric-value">${cplMedio>0?brl2(cplMedio):'—'}</div><div class="metric-sub">investimento ÷ leads</div></div>
       <div class="metric m-blue"><div class="metric-label">Cursos ativos</div><div class="metric-value">9</div><div class="metric-sub">com dados em junho</div></div>
     </div>
-
-    <hr class="divider">
-    <p class="section-label">Verbas por curso</p>
-    <div class="verba-grid">${verbaCards}</div>
-
-    <hr class="divider">
-    <p class="section-label">Comparativo de investimento</p>
-    <div class="chart-card">
-      <div class="chart-title">Investimento por curso — Meta vs Google vs LinkedIn</div>
-      <div class="legend">
-        <span><span class="legend-dot" style="background:#378ADD"></span>Meta</span>
-        <span><span class="legend-dot" style="background:#1D9E75"></span>Google</span>
-        <span><span class="legend-dot" style="background:#7F77DD"></span>LinkedIn</span>
-      </div>
-      <div class="chart-wrap" style="height:270px"><canvas id="c-resumo-inv"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Leads por curso — por canal</div>
-      <div class="legend">
-        <span><span class="legend-dot" style="background:#378ADD"></span>Meta</span>
-        <span><span class="legend-dot" style="background:#1D9E75"></span>Google</span>
-        <span><span class="legend-dot" style="background:#7F77DD"></span>LinkedIn</span>
-      </div>
-      <div class="chart-wrap" style="height:270px"><canvas id="c-resumo-leads"></canvas></div>
-    </div>
-
-    <hr class="divider">
-    <p class="section-label">Tabela de desempenho</p>
-    <div class="table-wrap">
-      <table class="resumo-table">
-        <thead><tr><th>Curso</th><th>Invest. Total</th><th>Leads ADS</th><th>CPL</th><th>Invest. Meta</th><th>Leads Meta</th><th>Invest. Google</th><th>Leads Google</th><th>Status CPL</th></tr></thead>
-        <tbody>${tableRows}</tbody>
-      </table>
-    </div>`;
+    <hr class="divider"><p class="section-label">Verbas por curso</p><div class="verba-grid">${verbaCards}</div>
+    <hr class="divider"><p class="section-label">Comparativo de investimento</p>
+    <div class="chart-card"><div class="chart-title">Investimento por curso — Meta vs Google vs LinkedIn</div><div class="legend"><span><span class="legend-dot" style="background:#378ADD"></span>Meta</span><span><span class="legend-dot" style="background:#1D9E75"></span>Google</span><span><span class="legend-dot" style="background:#7F77DD"></span>LinkedIn</span></div><div class="chart-wrap" style="height:270px"><canvas id="c-resumo-inv"></canvas></div></div>
+    <div class="chart-card"><div class="chart-title">Leads por curso — por canal</div><div class="legend"><span><span class="legend-dot" style="background:#378ADD"></span>Meta</span><span><span class="legend-dot" style="background:#1D9E75"></span>Google</span><span><span class="legend-dot" style="background:#7F77DD"></span>LinkedIn</span></div><div class="chart-wrap" style="height:270px"><canvas id="c-resumo-leads"></canvas></div></div>
+    <hr class="divider"><p class="section-label">Tabela de desempenho</p><div class="table-wrap"><table class="resumo-table"><thead><tr><th>Curso</th><th>Invest. Total</th><th>Leads ADS</th><th>CPL</th><th>Invest. Meta</th><th>Leads Meta</th><th>Invest. Google</th><th>Leads Google</th><th>Status CPL</th></tr></thead><tbody>${tableRows}</tbody></table></div>`;
 
   const labels = COURSE_ORDER.map(k=>COURSE_CONFIG[k].name);
-  
   makeChart('c-resumo-inv',{type:'bar',data:{labels,datasets:[
-    {label:'Meta',   data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_inv||0),  backgroundColor:'#378ADD',borderRadius:3},
-    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_inv||0),  backgroundColor:'#1D9E75',borderRadius:3},
+    {label:'Meta', data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_inv||0), backgroundColor:'#378ADD',borderRadius:3},
+    {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_inv||0), backgroundColor:'#1D9E75',borderRadius:3},
     {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_inv||0), backgroundColor:'#7F77DD',borderRadius:3},
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-    scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc},ticks:{callback:v=>'R$'+Math.round(v/1000)+'k'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc},ticks:{callback:v=>'R$'+Math.round(v/1000)+'k'}}}}});
 
   makeChart('c-resumo-leads',{type:'bar',data:{labels,datasets:[
-    {label:'Meta',   data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_leads||0), backgroundColor:'#378ADD',borderRadius:3},
+    {label:'Meta', data:COURSE_ORDER.map(k=>courseData[k]?.totals.m_leads||0), backgroundColor:'#378ADD',borderRadius:3},
     {label:'Google', data:COURSE_ORDER.map(k=>courseData[k]?.totals.g_leads||0), backgroundColor:'#1D9E75',borderRadius:3},
     {label:'LinkedIn',data:COURSE_ORDER.map(k=>courseData[k]?.totals.l_leads||0),backgroundColor:'#7F77DD',borderRadius:3},
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-    scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc}}}}});
 }
 
 function buildCoursePage(key, courseData) {
-  const cfg = COURSE_CONFIG[key];
-  const d   = courseData[key] || STATIC[key];
-  const t   = d.totals;
-  const budget = cfg.budget;
-  const cpl_total = t.leads>0 ? t.inv/t.leads : 0;
-  const sobra = budget.total - t.inv;
-  const pctUsado = budget.total > 0 ? (t.inv/budget.total*100).toFixed(1) : 0;
-
+  const cfg = COURSE_CONFIG[key]; const d = courseData[key] || STATIC[key]; const t = d.totals; const budget = cfg.budget; const cpl_total = t.leads>0 ? t.inv/t.leads : 0; const sobra = budget.total - t.inv; const pctUsado = budget.total > 0 ? (t.inv/budget.total*100).toFixed(1) : 0;
   const channelCards = cfg.channels.map(ch => {
-    const ck = ch==='LinkedIn'?'l':ch==='Google'?'g':'m';
-    const inv = t[ck+'_inv']||0, leads = t[ck+'_leads']||0;
-    const cpl = leads>0 ? inv/leads : 0;
-    const hdrBg = ch==='Meta'?'#185FA5':ch==='Google'?'#0F6E56':'#534AB7';
-    return `<div class="channel-card">
-      <div class="channel-header" style="background:${hdrBg}">${ch}</div>
-      <div class="channel-row"><span class="lbl">Investimento</span><span class="val">${brl(inv)}</span></div>
-      <div class="channel-row"><span class="lbl">Leads</span><span class="val">${leads}</span></div>
-      <div class="channel-row"><span class="lbl">CPL</span><span class="val">${cpl>0?brl2(cpl):'—'}</span></div>
-    </div>`;
+    const ck = ch==='LinkedIn'?'l':ch==='Google'?'g':'m'; const inv = t[ck+'_inv']||0, leads = t[ck+'_leads']||0; const cpl = leads>0 ? inv/leads : 0; const hdrBg = ch==='Meta'?'#185FA5':ch==='Google'?'#0F6E56':'#534AB7';
+    return `<div class="channel-card"><div class="channel-header" style="background:${hdrBg}">${ch}</div><div class="channel-row"><span class="lbl">Investimento</span><span class="val">${brl(inv)}</span></div><div class="channel-row"><span class="lbl">Leads</span><span class="val">${leads}</span></div><div class="channel-row"><span class="lbl">CPL</span><span class="val">${cpl>0?brl2(cpl):'—'}</span></div></div>`;
   }).join('');
 
-  const legendHtml = cfg.channels.map(ch => {
-    const col = ch==='Meta'?'#378ADD':ch==='Google'?'#1D9E75':'#7F77DD';
-    return `<span><span class="legend-dot" style="background:${col}"></span>${ch}</span>`;
-  }).join('');
-
-  const targetEl = document.getElementById('page-'+key);
-  if(!targetEl) return;
+  const legendHtml = cfg.channels.map(ch => { const col = ch==='Meta'?'#378ADD':ch==='Google'?'#1D9E75':'#7F77DD'; return `<span><span class="legend-dot" style="background:${col}"></span>${ch}</span>`; }).join('');
+  const targetEl = document.getElementById('page-'+key); if(!targetEl) return;
 
   targetEl.innerHTML = `
-    <h2 class="page-title">${cfg.name}</h2>
-    <p class="page-subtitle">Detalhamento de campanhas — Junho 2026</p>
-
+    <h2 class="page-title">${cfg.name}</h2><p class="page-subtitle">Detalhamento de campanhas — Junho 2026</p>
     <div class="metric-grid">
       <div class="metric"><div class="metric-label">Investimento total</div><div class="metric-value">${brl(t.inv)}</div><div class="metric-sub">de ${brl(budget.total)} orçado</div></div>
       <div class="metric m-teal"><div class="metric-label">Leads (ADS)</div><div class="metric-value">${t.leads}</div><div class="metric-sub">${t.rd} RD</div></div>
       <div class="metric m-purple"><div class="metric-label">CPL médio</div><div class="metric-value">${cpl_total>0?brl2(cpl_total):'—'}</div><div class="metric-sub">meta: ${cfg.cpl_meta>0?brl2(cfg.cpl_meta):'—'}</div></div>
       <div class="metric m-blue"><div class="metric-label">Saldo de verba</div><div class="metric-value">${brl(sobra)}</div><div class="metric-sub">${pctUsado}% utilizado</div></div>
     </div>
-
-    <hr class="divider">
-    <p class="section-label">Por canal</p>
-    <div class="channel-grid">${channelCards}</div>
-
-    <hr class="divider">
-    <p class="section-label">Leads por dia</p>
-    <div class="chart-card">
-      <div class="chart-title">Leads diários — ${cfg.name}</div>
-      <div class="legend">${legendHtml}</div>
-      <div class="chart-wrap" style="height:230px"><canvas id="c-${key}-leads"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Investimento diário — ${cfg.name}</div>
-      <div class="legend">${legendHtml}</div>
-      <div class="chart-wrap" style="height:230px"><canvas id="c-${key}-inv"></canvas></div>
-    </div>`;
+    <hr class="divider"><p class="section-label">Por canal</p><div class="channel-grid">${channelCards}</div>
+    <hr class="divider"><p class="section-label">Leads por dia</p>
+    <div class="chart-card"><div class="chart-title">Leads diários — ${cfg.name}</div><div class="legend">${legendHtml}</div><div class="chart-wrap" style="height:230px"><canvas id="c-${key}-leads"></canvas></div></div>
+    <div class="chart-card"><div class="chart-title">Investimento diário — ${cfg.name}</div><div class="legend">${legendHtml}</div><div class="chart-wrap" style="height:230px"><canvas id="c-${key}-inv"></canvas></div></div>`;
 
   const dsLeads=[], dsInv=[];
   cfg.channels.forEach(ch => {
-    const ck=ch==='LinkedIn'?'l':ch==='Google'?'g':'m';
-    const col=ch==='Meta'?'#378ADD':ch==='Google'?'#1D9E75':'#7F77DD';
-    const colA=ch==='Meta'?'rgba(55,138,221,0.08)':ch==='Google'?'rgba(29,158,117,0.08)':'rgba(127,119,221,0.08)';
-    const dash=ch==='Google'?[4,3]:ch==='LinkedIn'?[2,4]:undefined;
+    const ck=ch==='LinkedIn'?'l':ch==='Google'?'g':'m'; const col=ch==='Meta'?'#378ADD':ch==='Google'?'#1D9E75':'#7F77DD'; const colA=ch==='Meta'?'rgba(55,138,221,0.08)':ch==='Google'?'rgba(29,158,117,0.08)':'rgba(127,119,221,0.08)'; const dash=ch==='Google'?[4,3]:ch==='LinkedIn'?[2,4]:undefined;
     dsLeads.push({label:ch,data:d[ck+'_leads']||Array(30).fill(0),backgroundColor:col,borderRadius:2});
     const invDs={label:ch,data:d[ck+'_inv']||Array(30).fill(0),borderColor:col,backgroundColor:colA,fill:true,tension:0.3,pointRadius:2,borderWidth:2};
-    if(dash) invDs.borderDash=dash;
-    dsInv.push(invDs);
+    if(dash) invDs.borderDash=dash; dsInv.push(invDs);
   });
 
   const xOpts={grid:{color:gc},ticks:{maxRotation:45,autoSkip:true,maxTicksLimit:15}};
-  makeChart(`c-${key}-leads`,{type:'bar',data:{labels:DAYS,datasets:dsLeads},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-    scales:{x:{...xOpts,stacked:true},y:{stacked:true,grid:{color:gc},beginAtZero:true}}}});
-  makeChart(`c-${key}-inv`,{type:'line',data:{labels:DAYS,datasets:dsInv},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-    scales:{x:xOpts,y:{grid:{color:gc},ticks:{callback:v=>'R$'+Math.round(v)},beginAtZero:true}}}});
+  makeChart(`c-${key}-leads`,{type:'bar',data:{labels:DAYS,datasets:dsLeads},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{...xOpts,stacked:true},y:{stacked:true,grid:{color:gc},beginAtZero:true}}}});
+  makeChart(`c-${key}-inv`,{type:'line',data:{labels:DAYS,datasets:dsInv},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:xOpts,y:{grid:{color:gc},ticks:{callback:v=>'R$'+Math.round(v)},beginAtZero:true}}}});
 }
 
-// ══════════════════════════════════════════════
-// NAV
-// ══════════════════════════════════════════════
 document.getElementById('main-nav').addEventListener('click', e => {
-  const tab = e.target.closest('.nav-tab');
-  if (!tab) return;
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  tab.classList.add('active');
-  const targetPage = document.getElementById('page-'+tab.dataset.page);
-  if(targetPage) targetPage.classList.add('active');
+  const tab = e.target.closest('.nav-tab'); if (!tab) return;
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  tab.classList.add('active'); const targetPage = document.getElementById('page-'+tab.dataset.page); if(targetPage) targetPage.classList.add('active');
 });
 
-// ══════════════════════════════════════════════
-// FETCH DIRETO DO GOOGLE SHEETS VIA PARSE CSV (Ignora bloqueios de domínio corporativo)
-// ══════════════════════════════════════════════
 function renderDash(courseData) {
-  buildResumoPage(courseData);
-  COURSE_ORDER.forEach(k => buildCoursePage(k, courseData));
-  const now = new Date();
-  const ts = `Atualizado em ${now.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}`;
-  
-  const ut = document.getElementById('update-time');
-  if (ut) ut.textContent = ts;
-  
-  const lu = document.getElementById('last-up');
-  if (lu) lu.textContent = '· ' + ts;
-  
-  const loader = document.getElementById('loading');
-  if (loader) loader.style.display = 'none';
+  buildResumoPage(courseData); COURSE_ORDER.forEach(k => buildCoursePage(k, courseData));
+  const now = new Date(); const ts = `Atualizado em ${now.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}`;
+  const ut = document.getElementById('update-time'); if (ut) ut.textContent = ts;
+  const lu = document.getElementById('last-up'); if (lu) lu.textContent = '· ' + ts;
+  const loader = document.getElementById('loading'); if (loader) loader.style.display = 'none';
 }
 
-async function fetchFromGoogleSheets(gid) {
+async function fetchFromAppsScript(gid) {
   try {
-    // Endereço nativo de exportação limpa que não é barrado pelas políticas de proxy ou CORS de domínios corporativos
-    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/pub?gid=${gid}&single=true&output=csv&_t=${new Date().getTime()}`;
-    const res = await fetch(url);
+    const url = `${APPS_SCRIPT_API}?gid=${gid}&_t=${new Date().getTime()}`;
+    const res = await fetch(url, { method: 'GET', redirect: 'follow' });
     if (!res.ok) return null;
     const text = await res.text();
-    if (text && text.length > 50 && !text.startsWith('<html')) {
-      return text;
-    }
-  } catch(e) {
-    console.error(`Falha na sincronização do GID ${gid}:`, e);
-  }
+    if (text && text.length > 50 && !text.startsWith('<html')) { return text; }
+  } catch(e) { console.error(`Falha ao buscar dados do GID ${gid}:`, e); }
   return null;
 }
 
 async function fetchCourse(key, courseData) {
-  const gid = GIDS[key];
-  const csv = await fetchFromGoogleSheets(gid);
-  if (!csv) return; 
-  
+  const gid = GIDS[key]; const csv = await fetchFromAppsScript(gid); if (!csv) return; 
   try {
     const parsed = parseCSV(csv);
     if (parsed.totals.inv > 0 || parsed.totals.leads > 0 || parsed.totals.m_inv > 0) {
-      courseData[key] = {
-        ...STATIC[key],
-        totals: { ...STATIC[key].totals, ...parsed.totals },
-        meta_inv: parsed.meta_inv, meta_leads: parsed.meta_leads,
-        g_inv: parsed.g_inv,       g_leads: parsed.g_leads,
-        l_inv: parsed.l_inv,       l_leads: parsed.l_leads
-      };
+      courseData[key] = { ...STATIC[key], totals: { ...STATIC[key].totals, ...parsed.totals }, meta_inv: parsed.meta_inv, meta_leads: parsed.meta_leads, g_inv: parsed.g_inv, g_leads: parsed.g_leads, l_inv: parsed.l_inv, l_leads: parsed.l_leads };
     }
-  } catch(e) {
-    console.error(`Erro ao processar dados de ${key}:`, e);
-  }
+  } catch(e) { console.error(`Erro ao processar dados de ${key}:`, e); }
 }
 
 async function loadData() {
-  const courseData = {};
-  COURSE_ORDER.forEach(k => { courseData[k] = JSON.parse(JSON.stringify(STATIC[k])); });
-  
+  const courseData = {}; COURSE_ORDER.forEach(k => { courseData[k] = JSON.parse(JSON.stringify(STATIC[k])); });
   renderDash(courseData);
 
-  // Força desbloqueio visual após 4 segundos caso a rede demore
-  const failSafeTimeout = setTimeout(() => {
-    renderDash(courseData);
-  }, 4000);
+  const failSafeTimeout = setTimeout(() => { renderDash(courseData); }, 4000);
+  const fetches = COURSE_ORDER.map(key => fetchCourse(key, courseData).then(() => { buildCoursePage(key, courseData); }));
 
-  const fetches = COURSE_ORDER.map(key =>
-    fetchCourse(key, courseData).then(() => {
-      buildCoursePage(key, courseData);
-    })
-  );
-
-  await Promise.allSettled(fetches);
-  clearTimeout(failSafeTimeout);
-  renderDash(courseData);
+  await Promise.allSettled(fetches); clearTimeout(failSafeTimeout); buildResumoPage(courseData);
 }
 
 loadData();
