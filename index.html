@@ -154,16 +154,16 @@
 
   .course-budget-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
-    margin-bottom: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
   }
   .course-budget-card {
     background: var(--bg2);
     border: 1px solid var(--border);
     border-left: 4px solid var(--course-color, var(--orange));
     border-radius: var(--r);
-    padding: 16px;
+    padding: 20px;
   }
   .course-budget-top {
     display: flex;
@@ -174,19 +174,19 @@
   }
   .course-budget-name { font-size: 13px; font-weight: 700; }
   .course-budget-pct { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 700; color: var(--course-color, var(--orange)); }
-  .course-budget-value { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .course-budget-value { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 700; margin-bottom: 6px; }
   .course-budget-sub { font-size: 12px; color: var(--text2); }
   .course-budget-breakdown {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    margin-top: 12px;
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
   }
   .course-budget-breakdown div {
     background: var(--bg3);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 8px;
+    padding: 10px;
     min-width: 0;
   }
   .course-budget-breakdown small {
@@ -201,8 +201,14 @@
     display: block;
     color: var(--text);
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    overflow-wrap: anywhere;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+
+  @media(max-width: 760px) {
+    .course-budget-grid { grid-template-columns: 1fr; }
+    .course-budget-breakdown { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
   }
 
   /* CHARTS */
