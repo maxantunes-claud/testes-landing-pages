@@ -510,7 +510,9 @@ function parseVerbas() {
     if (label.endsWith('| PREVISTO TOTAL') || label.endsWith('| PREVISTO  TOTAL')) {
       cur = { name: label.replace('2026','').replace('| PREVISTO TOTAL','').replace('| PREVISTO  TOTAL','').trim() };
       courses.push(cur);
-    } else if (cur && label.match(/^(CCA|CPD|CCF|CIIC|CAS|OPS|CONGRESSO|MBA COMP|MBA LID|DISTRIBUIÇÃO)/)) {
+    } else if (label.match(/^DISTRIBUI/)) {
+      cur = null;
+    } else if (cur && label.match(/^(CCA|CPD|CCF|CIIC|CAS|OPS|CONGRESSO|MBA COMP|MBA LID)/)) {
       cur.shortName = label;
       if (r[1] === 'Setado') {
         cur.google_set  = parseBRL(r[2]);
@@ -668,6 +670,13 @@ function normCourseName(value) {
 function findCourseBudget(verbas, id) {
   if (!verbas.courses) return null;
   const targets = (COURSE_BUDGET_MATCH[id] || [id]).map(normCourseName);
+  if (id === 'mbalid') {
+    return verbas.courses.find(c => {
+      const haystack = normCourseName(`${c.shortName || ''} ${c.name || ''}`);
+      const compact = haystack.replace(/\s+/g, '');
+      return haystack.includes('MBA LID') || compact.includes('MBALID') || haystack.includes('LIDERANCA');
+    }) || null;
+  }
   return verbas.courses.find(c => {
     const shortName = normCourseName(c.shortName);
     return targets.some(target => shortName.includes(target));
