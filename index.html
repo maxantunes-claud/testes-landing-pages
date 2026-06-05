@@ -556,7 +556,25 @@ function parseVerbas() {
       pctCPL: String(r[17]||''),
     };
   }
-  return { courses, kpiMap };
+
+  const salesMap = {};
+  const salesHeaderIndex = rows.findIndex(r =>
+    r && String(r[8] || '').trim() === 'Cursos' && String(r[9] || '').trim() === 'Meta Ads'
+  );
+  if (salesHeaderIndex >= 0) {
+    for (let i = salesHeaderIndex + 1; i < rows.length; i++) {
+      const r = rows[i];
+      const name = String((r && r[8]) || '').trim();
+      if (!name || name === 'VENDAS') break;
+      salesMap[name] = {
+        meta: parseNumber(r[9]),
+        google: parseNumber(r[10]),
+        linkedin: parseNumber(r[11]),
+      };
+    }
+  }
+
+  return { courses, kpiMap, salesMap };
 }
 
 // ─── PARSE DAILY DATA ────────────────────────────────────────────────────────
@@ -687,6 +705,22 @@ function findCourseBudget(verbas, id) {
     const shortName = normCourseName(c.shortName);
     return targets.some(target => shortName.includes(target));
   }) || null;
+}
+
+function findCourseSales(verbas, id) {
+  if (!verbas.salesMap) return null;
+  const targets = (COURSE_BUDGET_MATCH[id] || [id]).map(normCourseName);
+  for (const [name, sales] of Object.entries(verbas.salesMap)) {
+    const normalized = normCourseName(name);
+    const compact = normalized.replace(/\s+/g, '');
+    if (id === 'mbalid' && (normalized.includes('MBA LID') || compact.includes('MBALID') || normalized.includes('LIDERANCA'))) {
+      return sales;
+    }
+    if (targets.some(target => normalized.includes(target) || compact.includes(target.replace(/\s+/g, '')))) {
+      return sales;
+    }
+  }
+  return null;
 }
 
 // ─── BUILD RESUMO ────────────────────────────────────────────────────────────
@@ -869,6 +903,26 @@ function buildCursoPage(pageId, id, label) {
 
   // Budget
   const vb = parseVerbas();
+  const sales = findCourseSales(vb, id);
+  const salesBudget = findCourseBudget(vb, id);
+  const salesInvestTotal = salesBudget ? (salesBudget.total_spent || 0) : totalInvest;
+  const salesInvestMeta = salesBudget ? (salesBudget.meta_spent || 0) : metaSummary.investment;
+  const salesInvestGoogle = salesBudget ? (salesBudget.google_spent || 0) : googleSummary.investment;
+  const salesInvestLinkedin = salesBudget ? (salesBudget.linkedin_spent || 0) : linkedinSummary.investment;
+  const salesTotal = sales ? (sales.meta + sales.google + sales.linkedin) : 0;
+  const cacValue = (investment, salesCount) => salesCount > 0 ? brl(investment / salesCount) : '—';
+  const salesKpiHTML = sales ? `
+    <div class="section-label">Vendas e CAC</div>
+    <div class="kpi-grid">
+      ${kpiCard('Vendas Geral', salesTotal.toLocaleString('pt-BR'), 'Todas as plataformas', 'badge-blue', '')}
+      ${kpiCard('CAC Geral', cacValue(salesInvestTotal, salesTotal), 'Gasto total / vendas', salesTotal > 0 ? 'badge-orange' : 'badge-red', '')}
+      ${kpiCard('Meta Ads · Vendas', sales.meta.toLocaleString('pt-BR'), 'Tabela Verbas - Resumo', 'badge-orange', '')}
+      ${kpiCard('Meta Ads · CAC', cacValue(salesInvestMeta, sales.meta), 'Gasto Meta / vendas', sales.meta > 0 ? 'badge-orange' : 'badge-red', '')}
+      ${kpiCard('Google Ads · Vendas', sales.google.toLocaleString('pt-BR'), 'Tabela Verbas - Resumo', 'badge-blue', '')}
+      ${kpiCard('Google Ads · CAC', cacValue(salesInvestGoogle, sales.google), 'Gasto Google / vendas', sales.google > 0 ? 'badge-blue' : 'badge-red', '')}
+      ${(linkedin || sales.linkedin > 0) ? kpiCard('LinkedIn Ads · Vendas', sales.linkedin.toLocaleString('pt-BR'), 'Tabela Verbas - Resumo', 'badge-blue', '') : ''}
+      ${(linkedin || sales.linkedin > 0) ? kpiCard('LinkedIn Ads · CAC', cacValue(salesInvestLinkedin, sales.linkedin), 'Gasto LinkedIn / vendas', sales.linkedin > 0 ? 'badge-blue' : 'badge-red', '') : ''}
+    </div>` : '';
   let budgetHTML = '';
   if (vb.kpiMap) {
     const nameMap = { cca:'CCA', cpd:'CPD', ccf:'CCF', ciic:'CIIC', saude:'CAS', legalops:'OPS', comp:'COMP', mbalid:'MBALID', congresso:'CONGRESSO' };
@@ -933,6 +987,7 @@ function buildCursoPage(pageId, id, label) {
       ${budgetHTML}
     </div>
     ${platformKpiHTML}
+    ${salesKpiHTML}
     ${verbaHTML}
     <div class="chart-grid">
       <div class="chart-card">
