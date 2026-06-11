@@ -1,0 +1,7 @@
+.venv/
+work/
+*.pyc
+__pycache__/
+db.sqlite3
+django_server/.env
+django_server/staticfiles/

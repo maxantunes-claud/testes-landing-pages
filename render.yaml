@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: dashboard-lec
+    runtime: python
+    rootDir: django_server
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn lec_dashboard.wsgi:application
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "0"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: GOOGLE_SHEETS_API_KEY
+        sync: false
+      - key: LEC_CURRENT_SHEET_ID
+        value: "1Y21y5IXRhGMErPQW5xrtOB0oUymDZ4iWTehlSueNvb4"
+      - key: DASHBOARD_USERNAME
+        sync: false
+      - key: DASHBOARD_PASSWORD
+        sync: false
