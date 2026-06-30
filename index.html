@@ -6,6 +6,8 @@
   <title>Workshop Intensivo · LEC · Compliance Estratégico</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://d335luupugsy2.cloudfront.net" />
+  <link rel="preconnect" href="https://www.clarity.ms" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <style>
@@ -918,17 +920,21 @@
     }
     .stat-card .stat-icon {
       color: var(--gold-light);
-      font-size: 1.55rem;
-      margin-bottom: 14px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 16px;
     }
     .stat-icon svg,
     .teacher-photo svg {
-      width: 1.2em;
-      height: 1.2em;
+      width: 24px;
+      height: 24px;
       display: block;
       stroke: currentColor;
       fill: none;
-      stroke-width: 2;
+      stroke-width: 1.9;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -1367,7 +1373,7 @@
         <p>Emitido pela Faculdade LEC — instituição de ensino superior com nota máxima no MEC, reconhecida em toda a América Latina.</p>
         <small>*Mediante envio das palavras-chave que serão divulgadas ao vivo.</small>
       </div>
-      <img class="cert-preview" src="assets/certificado-moldura.webp" alt="Modelo de certificado Workshop Intensivo" loading="lazy" decoding="async" />
+      <img class="cert-preview" src="assets/certificado-workshop.png" alt="Modelo de certificado Workshop Intensivo" loading="lazy" decoding="async" />
     </div>
   </div>
 </section>
@@ -1428,6 +1434,13 @@
         <div class="role">Sócio e Diretor Acadêmico da LEC</div>
       </div>
 
+      <!--
+        ## COMO ADICIONAR PROFESSORES NO CARROSSEL
+        1. Coloque a foto otimizada na pasta assets, de preferencia abaixo de 200 KB.
+        2. Copie um bloco .teacher-card.teacher-slide abaixo.
+        3. Atualize src, alt, nome no h3 e cargo em .role.
+        4. Mantenha loading="lazy" e decoding="async" para preservar a performance.
+      -->
       <div class="teacher-carousel" aria-label="Carrossel de professores">
         <div class="teacher-carousel-track">
           <div class="teacher-card teacher-slide">
@@ -1494,8 +1507,6 @@
     <div id="formulario-inscricao" class="embedded-form-wrap">
       <h3>Garanta sua vaga no workshop</h3>
       <div role="main" id="workshop-intensivo-captura-a-a163ed507cc7f4966978"></div>
-      <script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/rdstation-forms/stable/rdstation-forms.min.js"></script>
-      <script type="text/javascript"> new RDStationForms('workshop-intensivo-captura-a-a163ed507cc7f4966978', 'UA-87038322-1').createForm();</script>
     </div>
   </div>
 </section>
@@ -1522,21 +1533,21 @@
     <div class="lec-stats">
 
       <div class="stat-card">
-        <div class="stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l9-4 9 4-9 4-9-4Z"/><path d="M7 11v4c2 2 8 2 10 0v-4"/><path d="M21 8v6"/></svg></div>
+        <div class="stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l9-4 9 4-9 4-9-4Z"/><path d="M7 11.5v3.7c2.3 1.9 7.7 1.9 10 0v-3.7"/><path d="M21 8v5.5"/></svg></div>
         <h3>+30 mil alunos formados</h3>
         <p>Nossos alunos atuam em diferentes setores — terceiro setor, instituições públicas e privadas — implementando programas de compliance efetivos.</p>
       </div>
 
       <div class="stat-card">
-        <div class="stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14" r="4"/><path d="M9 3l3 6 3-6"/><path d="M7 3h10"/><path d="M10.5 16.5L9 21l3-2 3 2-1.5-4.5"/></svg></div>
+        <div class="stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v4a4 4 0 0 1-8 0V4Z"/><path d="M6 5H4v2a4 4 0 0 0 4 4"/><path d="M18 5h2v2a4 4 0 0 1-4 4"/><path d="M12 12v4"/><path d="M9 20h6"/><path d="M10 16h4"/></svg></div>
         <h3>Nota máxima no MEC</h3>
         <p>Credenciados e reconhecidos como instituição de ensino superior de excelência pelo Ministério da Educação.</p>
       </div>
 
       <div class="stat-card">
-        <div class="stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 12l3 3a3 3 0 0 0 4 0l5-5"/><path d="M2 12l5-5 4 4"/><path d="M7 7l3-3 4 4"/><path d="M17 17l3 3 2-2"/></svg></div>
+        <div class="stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 12.5 10 15a3 3 0 0 0 4.2 0l2.3-2.3"/><path d="m14 9 1.5-1.5a3 3 0 0 1 4.2 0l.8.8-4.7 4.7"/><path d="m10 9-1.5-1.5a3 3 0 0 0-4.2 0l-.8.8 4.7 4.7"/><path d="m9 16 2 2"/><path d="m13 16 2 2"/></svg></div>
         <h3>Certificação operada pela FGV-Projetos</h3>
-        <p>Parceria que valida tecnicamente o conhecimento dos nossos alunos com o reconhecimento da FGV.</p>
+        <p>Parceria que valida tecnicamente o conhecimento dos nossos alunos com o reconhecimento da FGV-Projetos.</p>
       </div>
 
       <div class="stat-card">
@@ -1604,7 +1615,7 @@
           <span class="faq-arrow">⌄</span>
         </button>
         <div class="faq-answer">
-          <p>Fale com nossa equipe de consultores pelo <a href="https://wa.me/55" target="_blank" rel="noopener">WhatsApp</a>. Estamos prontos para ajudar.</p>
+          <p>Fale com nossa equipe de consultores pelo <a href="https://api.whatsapp.com/send/?phone=5511989248322&text=Preciso+de+ajuda&type=phone_number&app_absent=0" target="_blank" rel="noopener">WhatsApp</a>. Estamos prontos para ajudar.</p>
         </div>
       </div>
 
@@ -1621,13 +1632,13 @@
       <img class="footer-logo" src="assets/logo-lec-gradiente.webp" alt="LEC" loading="lazy" decoding="async" />
       <p><strong>Faculdade LEC</strong></p>
     </div>
-    <p>A única escola de ensino superior 100% especializada em compliance do Brasil.</p>
-    <p style="margin-top:8px;">© 2025 LEC · Todos os direitos reservados.</p>
+    <p>A única escola de ensino superior especializada em compliance do Brasil.</p>
+    <p style="margin-top:8px;">© 2026 LEC · Todos os direitos reservados.</p>
   </div>
 </footer>
 
 <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/55" target="_blank" rel="noopener" class="whatsapp-float" title="Falar com consultor">
+<a href="https://api.whatsapp.com/send/?phone=5511989248322&text=Preciso+de+ajuda&type=phone_number&app_absent=0" target="_blank" rel="noopener" class="whatsapp-float" title="Falar com consultor">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 18.5 4 20l.7-3A8 8 0 1 1 12 20a8.5 8.5 0 0 1-5.5-1.5Z"/><path d="M9 8.8c.4 3 2.2 5.2 5.2 6 .7.2 1.3-.4 1.5-1l.2-.6c.1-.4-.1-.8-.5-1l-1.1-.5c-.3-.1-.7 0-.9.2l-.4.5c-1-.5-1.8-1.3-2.3-2.3l.5-.4c.3-.2.4-.6.2-.9l-.5-1.1c-.2-.4-.6-.6-1-.5l-.6.2c-.6.1-1 .7-.9 1.4Z"/></svg>
 </a>
 
@@ -1641,7 +1652,10 @@
       const item = btn.closest('.faq-item');
       const isOpen = item.classList.contains('open');
       // Close all
-      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+      });
       // Toggle current
       if (!isOpen) item.classList.add('open');
       btn.setAttribute('aria-expanded', (!isOpen).toString());
@@ -1664,12 +1678,31 @@
     const track = carousel.querySelector('.teacher-carousel-track');
     const prev = carousel.querySelector('[data-carousel-prev]');
     const next = carousel.querySelector('[data-carousel-next]');
+    if (!track || !prev || !next) return;
+    const slides = Array.from(track.querySelectorAll('.teacher-slide'));
+    if (slides.length === 0) return;
+    let currentSlide = 0;
     const move = direction => {
-      track.scrollBy({ left: direction * track.clientWidth, behavior: 'smooth' });
+      currentSlide = (currentSlide + direction + slides.length) % slides.length;
+      slides[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     };
     prev.addEventListener('click', () => move(-1));
     next.addEventListener('click', () => move(1));
   });
+
+  // --- RD Station form ---
+  (() => {
+    const formId = 'workshop-intensivo-captura-a-a163ed507cc7f4966978';
+    const script = document.createElement('script');
+    script.src = 'https://d335luupugsy2.cloudfront.net/js/rdstation-forms/stable/rdstation-forms.min.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.RDStationForms) {
+        new RDStationForms(formId, 'UA-87038322-1').createForm();
+      }
+    };
+    document.body.appendChild(script);
+  })();
 
 </script>
 
