@@ -632,6 +632,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+      width: 100%;
       padding: 36px 28px;
       border-radius: 14px;
       border: 1px solid rgba(198,32,208,0.72);
@@ -661,6 +662,7 @@
       max-width: 620px;
       margin: 0 auto;
       position: relative;
+      overflow: hidden;
     }
     .teacher-carousel-track {
       display: flex;
@@ -673,7 +675,8 @@
     }
     .teacher-carousel-track::-webkit-scrollbar { display: none; }
     .teacher-slide {
-      min-width: 100%;
+      flex: 0 0 100%;
+      min-width: 0;
       scroll-snap-align: start;
     }
     .teacher-carousel-controls {
@@ -1098,20 +1101,26 @@
         margin: 0 auto;
       }
       .pricing-card { padding: 32px 22px; }
+      #teachers {
+        overflow-x: hidden;
+      }
       #teachers h2 {
         margin-bottom: 30px;
       }
       .teachers-grid,
       .teacher-carousel {
-        max-width: 430px;
+        width: min(100%, 340px);
+        max-width: 340px;
       }
       .teacher-card {
-        padding: 28px 20px;
+        width: 100%;
+        max-width: 100%;
+        padding: 26px 18px;
         border-radius: 12px;
       }
       .teacher-photo {
-        width: 86px;
-        height: 86px;
+        width: 82px;
+        height: 82px;
         margin-bottom: 16px;
         border-width: 2px;
         box-shadow: 0 0 22px rgba(198,32,208,0.26);
@@ -1124,8 +1133,8 @@
         margin-bottom: 0;
       }
       .teacher-carousel-track {
-        gap: 14px;
-        padding-bottom: 12px;
+        gap: 12px;
+        padding: 2px 0 12px;
       }
       .teacher-carousel-controls {
         margin-top: 10px;
@@ -1209,7 +1218,7 @@
       <span class="workshop-word">Workshop</span>
       <span class="intensivo-word">Intensivo</span>
     </div>
-    <p class="hero-eyebrow">Ao vivo · Online · 24 e 27 de Julho · 8h · Com certificado</p>
+    <p class="hero-eyebrow">Ao vivo · 8h · Com certificado</p>
     <div class="ticket-alert" aria-label="Últimos ingressos">
       <div class="ticket-alert-title">Últimos ingressos</div>
       <div class="ticket-bar" aria-hidden="true"><div class="ticket-bar-fill"></div></div>
@@ -1463,7 +1472,7 @@
 <section id="pricing">
   <div class="container">
     <h2>Quanto você investe hoje para participar?</h2>
-    <p class="pricing-sub">24 e 27 de julho · 8h · Ao vivo · Online</p>
+    <p class="pricing-sub">31/07 e 03/08 · 8h às 10h</p>
 
     <div class="pricing-card">
       <h3 class="pricing-batch-title">1° Lote liberado</h3>
@@ -1555,7 +1564,7 @@
           <span class="faq-arrow">⌄</span>
         </button>
         <div class="faq-answer">
-          <p>O Workshop Intensivo acontece nos dias <strong>24 e 27 de julho, às 8h</strong>, ao vivo e online.</p>
+          <p>O Workshop Intensivo acontece nos dias <strong>31/07 e 03/08, das 8h às 10h</strong>, ao vivo e online.</p>
         </div>
       </div>
 
